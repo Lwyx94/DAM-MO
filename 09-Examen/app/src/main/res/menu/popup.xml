@@ -1,0 +1,10 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+<item
+    android:id="@+id/itEditar"
+    android:title="Editar"/>
+
+<item
+    android:id="@+id/itBorrar"
+    android:title="Borrar"/>
+</menu>

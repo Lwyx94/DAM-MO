@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="es.iesnervion.albertonavarro.a03_boletin31.MainActivity">
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:ems="3"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/sum1"
+        android:textSize="14sp" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:ems="3"
+        android:id="@+id/sum2"
+        android:textSize="14sp"
+        android:layout_marginStart="12dp"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/sumSimb2" />
+
+    <TextView
+        android:text="+"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/sumSimb2"
+        android:layout_marginStart="21dp"
+        android:textSize="18sp"
+        android:layout_alignBaseline="@+id/sum2"
+        android:layout_alignBottom="@+id/sum2"
+        android:layout_toEndOf="@+id/sum1" />
+
+    <TextView
+        android:text="="
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView2"
+        android:textSize="18sp"
+        android:layout_alignBaseline="@+id/sum2"
+        android:layout_alignBottom="@+id/sum2"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/sumRes"
+        android:textSize="18sp"
+        android:text="                         "
+        android:layout_alignBaseline="@+id/textView2"
+        android:layout_alignBottom="@+id/textView2"
+        android:layout_toEndOf="@+id/sumBoton" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:text="lorem ipsum"
+        android:ems="10"
+        android:layout_below="@+id/sumBoton"
+        android:layout_marginTop="10dp"
+        android:id="@+id/textoGrande"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true" />
+
+
+    <RadioGroup
+        android:layout_width="1000px"
+        android:layout_height="100px"
+        android:id = "@+id/radioGroup"
+        android:layout_below="@+id/textoGrande"
+        android:orientation="horizontal"
+        android:layout_alignParentStart="true">
+
+        <RadioButton
+            android:text="Verde"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/rbGreen"/>
+
+        <RadioButton
+            android:text="Rojo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/rbRed"/>
+
+        <RadioButton
+            android:text="Azul"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/rbBlue"
+            android:layout_weight="0.02" />
+
+        <android.support.v7.widget.SwitchCompat
+            android:layout_width="100px"
+            android:layout_height="100px"
+            android:id="@+id/switchAlin"
+            android:layout_weight="0.11"
+            android:text="Alinear"
+            android:textAlignment="textStart" />
+
+    </RadioGroup>
+
+    <Button
+        android:text="-"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/botonMenos"
+        android:layout_below="@id/radioGroup"
+        android:layout_alignParentStart="true"/>
+
+    <Button
+        android:text="+"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/radioGroup"
+        android:layout_alignParentEnd="true"
+        android:id="@+id/botonMas" />
+
+    <Button
+        android:text="Sumar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/sumBoton"
+        android:layout_marginTop="12dp"
+        android:layout_below="@+id/sum2"
+        android:layout_centerHorizontal="true" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/botonMas"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:id="@+id/foto"
+        app:srcCompat="@drawable/tierra" />
+
+    <ImageButton
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:scaleType="fitXY"
+        app:srcCompat="@drawable/izq"
+        android:id="@+id/imagenIzq"
+        android:layout_alignParentBottom="true"
+        android:layout_alignEnd="@+id/sum1"
+        android:layout_marginBottom="58dp" />
+
+    <ImageButton
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:scaleType="fitXY"
+        app:srcCompat="@drawable/der"
+        android:id="@+id/imagenDer"
+        android:layout_alignTop="@+id/imagenIzq"
+        android:layout_alignParentEnd="true" />
+
+
+</RelativeLayout>
