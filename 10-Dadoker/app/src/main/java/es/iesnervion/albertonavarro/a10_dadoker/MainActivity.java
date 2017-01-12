@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.btnHumano:
-                Toast.makeText(this, "Proximamente", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Próximamente", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.btnIA:
                 Intent intent = new Intent(this, vsIA.class);
@@ -36,3 +36,4 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 }
+
