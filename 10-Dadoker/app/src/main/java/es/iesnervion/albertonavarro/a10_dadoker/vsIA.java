@@ -1,6 +1,7 @@
 package es.iesnervion.albertonavarro.a10_dadoker;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.lang.reflect.Array;
 import java.util.Arrays;
@@ -16,8 +18,8 @@ import java.util.Random;
 
 public class vsIA extends AppCompatActivity implements View.OnClickListener{
     private Button btnRoll;
-    private TextView dado1, dado2, dado3, dado4, dado5;
-    private TextView dadoIA1, dadoIA2, dadoIA3, dadoIA4, dadoIA5;
+    private TextView dado1, dado2, dado3, dado4, dado5, txtResHum;
+    private TextView dadoIA1, dadoIA2, dadoIA3, dadoIA4, dadoIA5, txtResIA;
     private TextView[] dados = new TextView[5];
     private TextView[] dadosIA = new TextView[5];
     private Random ale = new Random();
@@ -28,6 +30,9 @@ public class vsIA extends AppCompatActivity implements View.OnClickListener{
         setContentView(R.layout.activity_vs_ia);
         btnRoll = (Button) findViewById(R.id.btnRoll);
         btnRoll.setOnClickListener(this);
+
+        txtResHum = (TextView) findViewById(R.id.txtResHum);
+        txtResIA = (TextView) findViewById(R.id.txtResIA);
 
         //Dados del usaurio
         dado1 = (TextView) findViewById(R.id.dado1);
@@ -48,19 +53,14 @@ public class vsIA extends AppCompatActivity implements View.OnClickListener{
 
         //Dados del adversario
         dadoIA1 = (TextView) findViewById(R.id.dadoIA1);
-        dadoIA1.setOnClickListener(this);
         dadosIA[0] = dadoIA1;
         dadoIA2 = (TextView) findViewById(R.id.dadoIA2);
-        dadoIA2.setOnClickListener(this);
         dadosIA[1] = dadoIA2;
         dadoIA3 = (TextView) findViewById(R.id.dadoIA3);
-        dadoIA3.setOnClickListener(this);
         dadosIA[2] = dadoIA3;
         dadoIA4 = (TextView) findViewById(R.id.dadoIA4);
-        dadoIA4.setOnClickListener(this);
         dadosIA[3] = dadoIA4;
         dadoIA5 = (TextView) findViewById(R.id.dadoIA5);
-        dadoIA5.setOnClickListener(this);
         dadosIA[4] = dadoIA5;
     }
 
@@ -71,17 +71,51 @@ public class vsIA extends AppCompatActivity implements View.OnClickListener{
             case R.id.btnRoll:
                 tirarDados();
                 break;
-
+            case R.id.dado1:
+                if(dado1.getCurrentTextColor()==Color.BLACK)
+                    dado1.setTextColor(Color.RED);
+                else
+                    dado1.setTextColor(Color.BLACK);
+                break;
+            case R.id.dado2:
+                if(dado2.getCurrentTextColor()==Color.BLACK)
+                    dado2.setTextColor(Color.RED);
+                else
+                    dado2.setTextColor(Color.BLACK);
+                break;
+            case R.id.dado3:
+                if(dado3.getCurrentTextColor()==Color.BLACK)
+                    dado3.setTextColor(Color.RED);
+                else
+                    dado3.setTextColor(Color.BLACK);
+                break;
+            case R.id.dado4:
+                if(dado4.getCurrentTextColor()==Color.BLACK)
+                    dado4.setTextColor(Color.RED);
+                else
+                    dado4.setTextColor(Color.BLACK);
+                break;
+            case R.id.dado5:
+                if(dado5.getCurrentTextColor()==Color.BLACK)
+                    dado5.setTextColor(Color.RED);
+                else
+                    dado5.setTextColor(Color.BLACK);
+                break;
         }
     }
 
     private void tirarDados() {
         //Usuario
-        dado1.setText(String.valueOf(ale.nextInt(6)+1));
-        dado2.setText(String.valueOf(ale.nextInt(6)+1));
-        dado3.setText(String.valueOf(ale.nextInt(6)+1));
-        dado4.setText(String.valueOf(ale.nextInt(6)+1));
-        dado5.setText(String.valueOf(ale.nextInt(6)+1));
+        if(dado1.getCurrentTextColor()==Color.BLACK)
+            dado1.setText(String.valueOf(ale.nextInt(6)+1));
+        if(dado2.getCurrentTextColor()==Color.BLACK)
+            dado2.setText(String.valueOf(ale.nextInt(6)+1));
+        if(dado3.getCurrentTextColor()==Color.BLACK)
+            dado3.setText(String.valueOf(ale.nextInt(6)+1));
+        if(dado4.getCurrentTextColor()==Color.BLACK)
+            dado4.setText(String.valueOf(ale.nextInt(6)+1));
+        if(dado5.getCurrentTextColor()==Color.BLACK)
+            dado5.setText(String.valueOf(ale.nextInt(6)+1));
 
         //Usuario
         dadoIA1.setText(String.valueOf(ale.nextInt(6)+1));
@@ -89,6 +123,88 @@ public class vsIA extends AppCompatActivity implements View.OnClickListener{
         dadoIA3.setText(String.valueOf(ale.nextInt(6)+1));
         dadoIA4.setText(String.valueOf(ale.nextInt(6)+1));
         dadoIA5.setText(String.valueOf(ale.nextInt(6)+1));
+
+        mostrarResultado();
+    }
+
+    private void mostrarResultado() {
+        int[] manoH = obtenerMano(dados);
+        int[] manoIA = obtenerMano(dadosIA);
+
+        txtResHum.setText(obtenerResultado(manoH));
+        txtResIA.setText(obtenerResultado(manoIA));
+
+        switch (humanoGanador(manoH, manoIA)) {
+            case 1:
+                Toast.makeText(this, "¡HAS GANADO!", Toast.LENGTH_SHORT).show();
+                break;
+            case 2:
+                Toast.makeText(this, "¡HAS PERDIDO! ¡JUAS!", Toast.LENGTH_SHORT).show();
+                break;
+            case 3:
+                Toast.makeText(this, "¡EMPATE! ¡AW YEAH!", Toast.LENGTH_SHORT).show();
+                break;
+        }
+
+    }
+
+
+
+    private String obtenerResultado(int[] mano) {
+        String res = "resultado";
+        switch (mano[0]){
+            case 0:
+               res = "Vaya mierda...";
+                break;
+            case 1:
+                res = "Pareja de "+mano[1];
+                break;
+            case 2:
+                res = "DoblePareja";
+                break;
+            case 3:
+                res = "Trío ( ͡° ͜ʖ ͡°)";
+                break;
+            case 4:
+                res = "Escalera (1-5)";
+                break;
+            case 5:
+                res = "Escalera (2-6)";
+                break;
+            case 6:
+                res = "Full HD";
+                break;
+            case 7:
+                res = "¡Póker de "+mano[1]+"!";
+                break;
+            case 8:
+                res = "¡¡¡REPÓKER DE "+mano[1]+"!!!";
+                break;
+        }
+        return res;
+
+    }
+
+    private int humanoGanador(int[] manoH, int[] manoIA) {
+        int res = 3;
+        if(manoH[0]>manoIA[0])
+            res=1;
+        else if(manoH[0]<manoIA[0])
+            res=2;
+        else {
+            if(manoH[1]>manoIA[1])
+                res=1;
+            else if(manoH[1]<manoIA[1])
+                res=2;
+            else {
+                if(manoH[2]>manoIA[2])
+                    res=1;
+                else if(manoH[2]<manoIA[2])
+                    res=2;
+            }
+        }
+
+        return res;
     }
 
     /**
@@ -103,14 +219,66 @@ public class vsIA extends AppCompatActivity implements View.OnClickListener{
      *         7-Poker
      *         8-RePoker
      */
-    private int obtenerMano(TextView[] array){
-        int res=0, numIguales1, numIguales2;
-        Arrays.sort(volcarNumeros(array));
+    private int[] obtenerMano(TextView[] array){
+        int[] res = new int[3];
+        int numRep1=0, numRep2=0;
+        int cuent1=1, cuent2=1;
+        int[] numeros = volcarNumeros(array);
+        Arrays.sort(numeros);
 
+        if(esEscalera(numeros)){
+            if(numeros[0]==1)
+                res[0]=4;
+            else
+                res[0]=5;
+        }else{
+            for(int i = 1; i < numeros.length; i++) {
+                if(numeros[i] == numeros[i - 1]) {
+                    if(numRep1==0) {
+                        numRep1=numeros[i];
+                        cuent1++;
+                    }
+                    else if(numRep1==numeros[i]){
+                        cuent1++;
+                    }else {
+                        numRep2 = numeros[i];
+                        cuent2++;
+                    }
+                }
+            }
+            if(numRep1!=0&&numRep2!=0) {//Dos combinaciones
+                if (cuent1==3&&cuent2==2){//Full
+                    res[0]=6;res[1]=numRep1;res[2]=numRep2;
+                }else if(cuent1==2&&cuent2==3){//Full
+                    res[0]=6;res[1]=numRep2;res[2]=numRep1;
+                }else if(numRep1>numRep2){//Doble Pareja
+                    res[0]=2;res[1]=numRep1;res[2]=numRep2;}
+                else{//Pareja
+                    res[0]=2;res[1]=numRep2;res[2]=numRep1;}
 
+            }else if(numRep1!=0){
+                switch (cuent1){
+                    case 2:
+                        res[0]=1;res[1]=numRep1;
+                        break;
+                    case 3:
+                        res[0]=3;res[1]=numRep1;
+                        break;
+                    case 4:
+                        res[0]=7;res[1]=numRep1;
+                        break;
+                    case 5:
+                        res[0]=8;res[1]=numRep1;
+                        break;
+                }
+            }
+            else
+                res[0]=0;
+        }
         return res;
-
     }
+
+
 
     private int[] volcarNumeros(TextView[] array){
         int[] res = new int[5];
@@ -120,5 +288,12 @@ public class vsIA extends AppCompatActivity implements View.OnClickListener{
         return res;
     }
 
-
+    private boolean esEscalera(int[] numeros) {
+        boolean res = true;
+        for(int i = 0; i< numeros.length-1 && res; i++){
+            if(numeros[i]+1 != numeros[i+1])
+                res = false;
+        }
+        return res;
+    }
 }
