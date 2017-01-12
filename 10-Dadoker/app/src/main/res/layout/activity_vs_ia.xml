@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        >
+        android:id="@+id/linearLayout3">
 
         <TextView
             android:layout_width="wrap_content"
@@ -57,15 +57,36 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true">
-        <Button
-            android:layout_width="match_parent"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/linearLayout4">
+
+
+
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="resultado"
+            android:textSize="30sp"
+            android:id="@+id/txtResIA"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:text="@string/roll"
             android:textSize="30sp"
             android:id="@+id/btnRoll"
             />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="resultado"
+            android:textSize="30sp"
+            android:id="@+id/txtResHum"/>
     </LinearLayout>
 
 
@@ -76,6 +97,7 @@
         android:layout_alignParentBottom="true">
 
         <TextView
+            android:textColor="@android:color/black"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="1"
@@ -84,6 +106,7 @@
             android:id="@+id/dado1"/>
 
         <TextView
+            android:textColor="@android:color/black"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="2"
@@ -92,6 +115,7 @@
             android:id="@+id/dado2"/>
 
         <TextView
+            android:textColor="@android:color/black"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="3"
@@ -100,6 +124,7 @@
             android:id="@+id/dado3"/>
 
         <TextView
+            android:textColor="@android:color/black"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="4"
@@ -108,6 +133,7 @@
             android:id="@+id/dado4"/>
 
         <TextView
+            android:textColor="@android:color/black"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="5"
@@ -115,6 +141,4 @@
             android:layout_margin="10dp"
             android:id="@+id/dado5"/>
     </LinearLayout>
-
-
 </RelativeLayout>
