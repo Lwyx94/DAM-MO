@@ -1,19 +1,16 @@
 package es.iesnervion.albertonavarro.a10_dadoker;
 
-import android.content.Intent;
+
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.lang.reflect.Array;
+
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Random;
 
 public class vsIA extends AppCompatActivity implements View.OnClickListener{
@@ -117,7 +114,7 @@ public class vsIA extends AppCompatActivity implements View.OnClickListener{
         if(dado5.getCurrentTextColor()==Color.BLACK)
             dado5.setText(String.valueOf(ale.nextInt(6)+1));
 
-        //Usuario
+        //IA
         dadoIA1.setText(String.valueOf(ale.nextInt(6)+1));
         dadoIA2.setText(String.valueOf(ale.nextInt(6)+1));
         dadoIA3.setText(String.valueOf(ale.nextInt(6)+1));
@@ -192,9 +189,9 @@ public class vsIA extends AppCompatActivity implements View.OnClickListener{
         else if(manoH[0]<manoIA[0])
             res=2;
         else {
-            if(manoH[1]>manoIA[1])
+            if(manoH[1]>manoIA[1]||manoH[1]==1&&manoH[1]!=manoIA[1])
                 res=1;
-            else if(manoH[1]<manoIA[1])
+            else if(manoH[1]<manoIA[1]||manoIA[1]==1&&manoIA[1]!=manoH[1])
                 res=2;
             else {
                 if(manoH[2]>manoIA[2])
