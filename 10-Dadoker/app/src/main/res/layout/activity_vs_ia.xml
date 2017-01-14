@@ -17,6 +17,7 @@
         android:background="#FF5555">
 
         <es.iesnervion.albertonavarro.a10_dadoker.Dado
+            android:layout_gravity="top"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:src="@drawable/dado1"
@@ -26,6 +27,7 @@
             android:id="@+id/dadoIA1"/>
 
         <es.iesnervion.albertonavarro.a10_dadoker.Dado
+            android:layout_gravity="top"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:src="@drawable/dado2"
@@ -35,6 +37,7 @@
             android:id="@+id/dadoIA2"/>
 
         <es.iesnervion.albertonavarro.a10_dadoker.Dado
+            android:layout_gravity="top"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:src="@drawable/dado3"
@@ -45,6 +48,7 @@
             android:id="@+id/dadoIA3"/>
 
         <es.iesnervion.albertonavarro.a10_dadoker.Dado
+            android:layout_gravity="top"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:src="@drawable/dado4"
@@ -55,6 +59,7 @@
             android:id="@+id/dadoIA4"/>
 
         <es.iesnervion.albertonavarro.a10_dadoker.Dado
+            android:layout_gravity="top"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:src="@drawable/dado5"
@@ -63,6 +68,48 @@
 
             android:layout_weight="1"
             android:id="@+id/dadoIA5"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/corasonesIA">
+
+        <ImageView
+            android:textColor="@android:color/black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/corasonrojo"
+            android:textSize="40sp"
+            android:layout_margin="10dp"
+            android:id="@+id/corIA1"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/corasonrojo"
+            android:layout_margin="10dp"
+            android:id="@+id/corIA2"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/corasonrojo"
+            android:layout_margin="10dp"
+            android:id="@+id/corIA3"/>
+        <ImageView
+            android:textColor="@android:color/black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/corasonrojo"
+            android:layout_margin="10dp"
+            android:id="@+id/corIA4"/>
+        <ImageView
+            android:textColor="@android:color/black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/corasonrojo"
+            android:layout_margin="10dp"
+            android:id="@+id/corIA5"/>
+
     </LinearLayout>
 
     <LinearLayout
@@ -98,24 +145,66 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:id="@+id/corasonesH">
+
+        <ImageView
+            android:textColor="@android:color/black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/corasonrojo"
+            android:textSize="40sp"
+            android:layout_margin="10dp"
+            android:id="@+id/cor1"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/corasonrojo"
+            android:layout_margin="10dp"
+            android:id="@+id/cor2"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/corasonrojo"
+            android:layout_margin="10dp"
+            android:id="@+id/cor3"/>
+        <ImageView
+            android:textColor="@android:color/black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/corasonrojo"
+            android:layout_margin="10dp"
+            android:id="@+id/cor4"/>
+        <ImageView
+            android:textColor="@android:color/black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/corasonrojo"
+            android:layout_margin="10dp"
+            android:id="@+id/cor5"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:id="@+id/tableroH"
         android:gravity="center"
         android:layout_weight="2"
         android:background="#55FF55">
 
-
         <es.iesnervion.albertonavarro.a10_dadoker.Dado
+            android:layout_gravity="bottom"
             android:textColor="@android:color/black"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:src="@drawable/dado1"
             android:textSize="40sp"
             android:layout_margin="10dp"
-
             android:layout_weight="1"
             android:id="@+id/dado1"/>
 
         <es.iesnervion.albertonavarro.a10_dadoker.Dado
+            android:layout_gravity="bottom"
             android:textColor="@android:color/black"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -127,6 +216,7 @@
             android:id="@+id/dado2"/>
 
         <es.iesnervion.albertonavarro.a10_dadoker.Dado
+            android:layout_gravity="bottom"
             android:textColor="@android:color/black"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -138,6 +228,7 @@
             android:id="@+id/dado3"/>
 
         <es.iesnervion.albertonavarro.a10_dadoker.Dado
+            android:layout_gravity="bottom"
             android:textColor="@android:color/black"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -149,6 +240,7 @@
             android:id="@+id/dado4"/>
 
         <es.iesnervion.albertonavarro.a10_dadoker.Dado
+            android:layout_gravity="bottom"
             android:textColor="@android:color/black"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

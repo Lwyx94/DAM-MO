@@ -1,13 +1,15 @@
 package es.iesnervion.albertonavarro.a10_dadoker;
 
+import android.app.Activity;
+import android.content.DialogInterface;
 import android.graphics.Color;
-import android.graphics.ColorFilter;
 import android.graphics.PorterDuff;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -23,8 +25,14 @@ public class vsIA extends AppCompatActivity implements View.OnClickListener{
     private Dado dadoIA1, dadoIA2, dadoIA3, dadoIA4, dadoIA5;
     private Dado[] dados = new Dado[5];
     private Dado[] dadosIA = new Dado[5];
+    private ImageView cor1,cor2,cor3,cor4,cor5;
+    private ImageView corIA1,corIA2,corIA3,corIA4,corIA5;
+    private ImageView[] corasonesH = new ImageView[5];
+    private ImageView[] corasonesIA = new ImageView[5];
     private LinearLayout tableroIA, tableroH;
     private Random ale = new Random();
+    private int vidaH = 5;
+    private int vidaIA = 5;
     private boolean primeraTirada = true;
 
     @Override
@@ -58,7 +66,6 @@ public class vsIA extends AppCompatActivity implements View.OnClickListener{
 
         //Dados del adversario
         dadoIA1 = (Dado) findViewById(R.id.dadoIA1);
-        dadoIA1.setTag(1);
         dadosIA[0] = dadoIA1;
         dadoIA2 = (Dado) findViewById(R.id.dadoIA2);
         dadosIA[1] = dadoIA2;
@@ -68,6 +75,30 @@ public class vsIA extends AppCompatActivity implements View.OnClickListener{
         dadosIA[3] = dadoIA4;
         dadoIA5 = (Dado) findViewById(R.id.dadoIA5);
         dadosIA[4] = dadoIA5;
+
+        //Corazones del usuarioo
+        cor1 = (ImageView) findViewById(R.id.cor1);
+        corasonesH[0] = cor1;
+        cor2 = (ImageView) findViewById(R.id.cor2);
+        corasonesH[1] = cor2;
+        cor3 = (ImageView) findViewById(R.id.cor3);
+        corasonesH[2] = cor3;
+        cor4 = (ImageView) findViewById(R.id.cor4);
+        corasonesH[3] = cor4;
+        cor5 = (ImageView) findViewById(R.id.cor5);
+        corasonesH[4] = cor5;
+
+        //Corazones del adversario
+        corIA1 = (ImageView) findViewById(R.id.corIA1);
+        corasonesIA[0] = corIA1;
+        corIA2 = (ImageView) findViewById(R.id.corIA2);
+        corasonesIA[1] = corIA2;
+        corIA3 = (ImageView) findViewById(R.id.corIA3);
+        corasonesIA[2] = corIA3;
+        corIA4 = (ImageView) findViewById(R.id.corIA4);
+        corasonesIA[3] = corIA4;
+        corIA5 = (ImageView) findViewById(R.id.corIA5);
+        corasonesIA[4] = corIA5;
     }
 
 
@@ -204,11 +235,48 @@ public class vsIA extends AppCompatActivity implements View.OnClickListener{
             }
         }
 
-
-
         mostrarResultado();
+        actualizarVida();
+
+        if(vidaH==0 || vidaIA==0){
+            String titulo = (vidaH==0)?"¡DERROTA!": "¡VICTORIA!";
+            String mensaje = (vidaH==0)?"¡Has perdido!": "¡Has ganado!";
+            new AlertDialog.Builder(this)
+                    .setTitle(titulo)
+                    .setMessage(mensaje)
+                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            finish();
+                        }
+                    })
+                    .show();
+        }
+
+
         primeraTirada=!primeraTirada;
         btnRoll.setTextColor(Color.GREEN);
+    }
+
+    private void actualizarVida() {
+        int cont = 0;
+        for(ImageView cor: corasonesH){
+            if(cont < vidaH)
+                cor.setImageResource(R.drawable.corasonrojo);
+            else
+                cor.setImageResource(R.drawable.corasonnegro);
+            cont++;
+        }
+
+        cont = 0;
+
+        for(ImageView cor: corasonesIA){
+            if(cont < vidaIA)
+                cor.setImageResource(R.drawable.corasonrojo);
+            else
+                cor.setImageResource(R.drawable.corasonnegro);
+            cont++;
+        }
+
     }
 
     private void mostrarResultado() {
@@ -225,6 +293,7 @@ public class vsIA extends AppCompatActivity implements View.OnClickListener{
                 if(!primeraTirada) {
                     tableroH.setBackgroundColor(Color.GREEN);
                     tableroIA.setBackgroundColor(Color.RED);
+                    vidaIA--;
                 }
                 break;
             case 2:
@@ -232,6 +301,7 @@ public class vsIA extends AppCompatActivity implements View.OnClickListener{
                 if(!primeraTirada) {
                     tableroH.setBackgroundColor(Color.RED);
                     tableroIA.setBackgroundColor(Color.GREEN);
+                    vidaH--;
                 }
                 break;
             case 3:
