@@ -16,44 +16,52 @@
         android:layout_weight="2"
         android:background="#FF5555">
 
-        <TextView
-            android:layout_width="wrap_content"
+        <es.iesnervion.albertonavarro.a10_dadoker.Dado
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="1"
+            android:src="@drawable/dado1"
             android:textSize="40sp"
             android:layout_margin="10dp"
+            android:layout_weight="1"
             android:id="@+id/dadoIA1"/>
 
-        <TextView
-            android:layout_width="wrap_content"
+        <es.iesnervion.albertonavarro.a10_dadoker.Dado
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="2"
+            android:src="@drawable/dado2"
             android:textSize="40sp"
             android:layout_margin="10dp"
+            android:layout_weight="1"
             android:id="@+id/dadoIA2"/>
 
-        <TextView
-            android:layout_width="wrap_content"
+        <es.iesnervion.albertonavarro.a10_dadoker.Dado
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="3"
+            android:src="@drawable/dado3"
             android:textSize="40sp"
             android:layout_margin="10dp"
+
+            android:layout_weight="1"
             android:id="@+id/dadoIA3"/>
 
-        <TextView
-            android:layout_width="wrap_content"
+        <es.iesnervion.albertonavarro.a10_dadoker.Dado
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="4"
+            android:src="@drawable/dado4"
             android:textSize="40sp"
             android:layout_margin="10dp"
+
+            android:layout_weight="1"
             android:id="@+id/dadoIA4"/>
 
-        <TextView
-            android:layout_width="wrap_content"
+        <es.iesnervion.albertonavarro.a10_dadoker.Dado
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="5"
+            android:src="@drawable/dado5"
             android:textSize="40sp"
             android:layout_margin="10dp"
+
+            android:layout_weight="1"
             android:id="@+id/dadoIA5"/>
     </LinearLayout>
 
@@ -61,15 +69,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
         android:id="@+id/linearLayout4">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="resultado"
             android:textSize="30sp"
             android:id="@+id/txtResIA"/>
 
@@ -85,7 +90,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="resultado"
             android:textSize="30sp"
             android:id="@+id/txtResHum"/>
     </LinearLayout>
@@ -100,49 +104,59 @@
         android:background="#55FF55">
 
 
-        <TextView
+        <es.iesnervion.albertonavarro.a10_dadoker.Dado
             android:textColor="@android:color/black"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="1"
+            android:src="@drawable/dado1"
             android:textSize="40sp"
             android:layout_margin="10dp"
+
+            android:layout_weight="1"
             android:id="@+id/dado1"/>
 
-        <TextView
+        <es.iesnervion.albertonavarro.a10_dadoker.Dado
             android:textColor="@android:color/black"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="2"
+            android:src="@drawable/dado1"
             android:textSize="40sp"
             android:layout_margin="10dp"
+
+            android:layout_weight="1"
             android:id="@+id/dado2"/>
 
-        <TextView
+        <es.iesnervion.albertonavarro.a10_dadoker.Dado
             android:textColor="@android:color/black"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="3"
+            android:src="@drawable/dado1"
             android:textSize="40sp"
             android:layout_margin="10dp"
+
+            android:layout_weight="1"
             android:id="@+id/dado3"/>
 
-        <TextView
+        <es.iesnervion.albertonavarro.a10_dadoker.Dado
             android:textColor="@android:color/black"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="4"
+            android:src="@drawable/dado1"
             android:textSize="40sp"
             android:layout_margin="10dp"
+
+            android:layout_weight="1"
             android:id="@+id/dado4"/>
 
-        <TextView
+        <es.iesnervion.albertonavarro.a10_dadoker.Dado
             android:textColor="@android:color/black"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="5"
+            android:src="@drawable/dado1"
             android:textSize="40sp"
             android:layout_margin="10dp"
+
+            android:layout_weight="1"
             android:id="@+id/dado5"/>
     </LinearLayout>
 </LinearLayout>
