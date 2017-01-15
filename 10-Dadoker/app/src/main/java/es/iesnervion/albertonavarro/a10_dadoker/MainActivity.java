@@ -27,11 +27,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.btnHumano:
-                Toast.makeText(this, "Próximamente", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(this, BuscaJugadores.class));
                 break;
             case R.id.btnIA:
-                Intent intent = new Intent(this, vsIA.class);
-                startActivity(intent);
+                startActivity(new Intent(this, vsIA.class));
                 break;
         }
     }
