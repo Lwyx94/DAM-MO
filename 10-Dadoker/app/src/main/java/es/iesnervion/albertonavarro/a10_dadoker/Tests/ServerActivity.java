@@ -1,4 +1,4 @@
-package es.iesnervion.albertonavarro.a10_dadoker;
+package es.iesnervion.albertonavarro.a10_dadoker.Tests;
 
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -15,6 +15,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
 import java.util.Enumeration;
+
+import es.iesnervion.albertonavarro.a10_dadoker.R;
 
 public class ServerActivity extends AppCompatActivity {
 
@@ -66,7 +68,7 @@ public class ServerActivity extends AppCompatActivity {
 
                         try {
                             BufferedReader in = new BufferedReader(new InputStreamReader(client.getInputStream()));
-                            String line = null;
+                            String line;
                             while ((line = in.readLine()) != null) {
                                 Log.d("ServerActivity", line);
                                 handler.post(new Runnable() {
@@ -129,7 +131,8 @@ public class ServerActivity extends AppCompatActivity {
         super.onStop();
         try {
             // make sure you close the socket upon exiting
-            serverSocket.close();
+            if(serverSocket!=null)
+                serverSocket.close();
         } catch (IOException e) {
             e.printStackTrace();
         }

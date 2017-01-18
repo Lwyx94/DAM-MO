@@ -3,6 +3,8 @@
     package="es.iesnervion.albertonavarro.a10_dadoker">
 
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -26,9 +28,10 @@
         <activity
             android:name=".VsIA"
             android:screenOrientation="portrait" />
-        <activity android:name=".Recibidor" />
         <activity android:name=".BuscaJugadores" />
-        <activity android:name=".ServerActivity"></activity>
+        <activity android:name=".Tests.ServerActivity" />
+        <activity android:name=".VsHumano" />
+        <activity android:name=".Tests.ClientActivity"></activity>
     </application>
 
 </manifest>

@@ -1,10 +1,11 @@
-package es.iesnervion.albertonavarro.a10_dadoker;
+package es.iesnervion.albertonavarro.a10_dadoker.Utiles;
 
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -14,16 +15,15 @@ import java.io.InputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+public class Servidor extends AsyncTask {
 
-public class FileServerAsyncTask extends AsyncTask {
     private Context context;
     private TextView statusText;
 
-    public FileServerAsyncTask(Context context, View statusText) {
+    public Servidor(Context context, View statusText) {
         this.context = context;
         this.statusText = (TextView) statusText;
     }
-
 
     @Override
     protected Object doInBackground(Object[] objects) {
@@ -35,35 +35,22 @@ public class FileServerAsyncTask extends AsyncTask {
              */
             ServerSocket serverSocket = new ServerSocket(8888);
             Socket client = serverSocket.accept();
-
-
-
-            /**
-             * If this code is reached, a client has connected and transferred data
-             * Save the input stream from the client as a JPEG file
-             */
-            final File f = new File(Environment.getExternalStorageDirectory() + "/"
-                    + context.getPackageName() + "/wifip2pshared-" + System.currentTimeMillis()
-                    + ".jpg");
-
-            File dirs = new File(f.getParent());
-            if (!dirs.exists())
-                dirs.mkdirs();
-            f.createNewFile();
-            InputStream inputstream = client.getInputStream();
-            //copyFile(inputstream, new FileOutputStream(f));
             serverSocket.close();
-            return f.getAbsolutePath();
+
         } catch (IOException e) {
-            //Log.e(WiFiDirectActivity.TAG, e.getMessage());
-            return null;
+            Log.e("ERROR", e.getMessage());
         }
+        return null;
+    }
+
+    protected void onProgressUpdate(Integer... progress) {
+
     }
 
     /**
      * Start activity that can handle the JPEG image
      */
-    protected void onPostExecute(String result) {
+    protected void onPostExecute(Long result) {
         if (result != null) {
             statusText.setText("File copied - " + result);
             Intent intent = new Intent();
@@ -72,7 +59,5 @@ public class FileServerAsyncTask extends AsyncTask {
             context.startActivity(intent);
         }
     }
-
 }
-
 

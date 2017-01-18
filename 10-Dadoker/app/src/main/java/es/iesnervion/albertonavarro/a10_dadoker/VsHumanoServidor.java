@@ -3,23 +3,33 @@ package es.iesnervion.albertonavarro.a10_dadoker;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.net.SocketException;
 import java.util.Arrays;
+import java.util.Enumeration;
 import java.util.Random;
 
 import es.iesnervion.albertonavarro.a10_dadoker.Models.Dado;
 
-//TODO: Implementar for extendido -_-
-public class VsIA extends AppCompatActivity implements View.OnClickListener{
+@Deprecated
+public class VsHumanoServidor extends AppCompatActivity implements View.OnClickListener{
     private Button btnRoll;
     private Dado dado1, dado2, dado3, dado4, dado5;
     private TextView txtResHum, txtResIA;
@@ -36,10 +46,17 @@ public class VsIA extends AppCompatActivity implements View.OnClickListener{
     private int vidaIA = 5;
     private boolean primeraTirada = true;
 
+    //Servidor
+    private TextView serverStatus;
+    public static String SERVERIP = "10.0.2.15";
+    public static final int SERVERPORT = 8080;
+    private Handler handler = new Handler();
+    private ServerSocket serverSocket;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_vs_ia);
+        setContentView(R.layout.activity_vs_humano);
         btnRoll = (Button) findViewById(R.id.btnRoll);
         btnRoll.setOnClickListener(this);
 
@@ -100,6 +117,12 @@ public class VsIA extends AppCompatActivity implements View.OnClickListener{
         corasonesIA[3] = corIA4;
         corIA5 = (ImageView) findViewById(R.id.corIA5);
         corasonesIA[4] = corIA5;
+
+        //Servidor
+        serverStatus = (TextView) findViewById(R.id.server_status);
+        SERVERIP = getLocalIpAddress();
+        Thread fst = new Thread(new VsHumanoServidor.ServerThread());
+        fst.start();
     }
 
 
@@ -167,23 +190,6 @@ public class VsIA extends AppCompatActivity implements View.OnClickListener{
            if (dado.getColorFilter() != null)
                dado.clearColorFilter();
        }
-
-        /*}else {
-            //if (dado1.getCurrentTextColor() == Color.BLACK)
-                dado1.setValor(ale.nextInt(6) + 1);
-            //if (dado2.getCurrentTextColor() == Color.BLACK)
-                dado1.setValor(ale.nextInt(6) + 1);
-            //if (dado3.getCurrentTextColor() == Color.BLACK)
-                dado1.setValor(ale.nextInt(6) + 1);
-            //if (dado4.getCurrentTextColor() == Color.BLACK)
-                dado1.setValor(ale.nextInt(6) + 1);
-            //if (dado5.getCurrentTextColor() == Color.BLACK)
-                dado1.setValor(ale.nextInt(6) + 1);
-
-            for(TextView tv : dados)
-                tv.setTextColor(Color.BLACK);
-
-        }*/
 
         //IA
         for(Dado dado: dadosIA)
@@ -462,5 +468,101 @@ public class VsIA extends AppCompatActivity implements View.OnClickListener{
                 res = false;
         }
         return res;
+    }
+
+
+    /**COSAS DEL SERVIDOR**/
+    public class ServerThread implements Runnable {
+
+        public void run() {
+            try {
+                if (SERVERIP != null) {
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            serverStatus.setText("ESPERANDO CONEXION");
+                        }
+                    });
+                    serverSocket = new ServerSocket(SERVERPORT);
+                    while (true) {
+                        // listen for incoming clients
+                        Socket client = serverSocket.accept();
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                serverStatus.setText("Connected.");
+                            }
+                        });
+
+                        try {
+                            BufferedReader in = new BufferedReader(new InputStreamReader(client.getInputStream()));
+                            String line;
+                            while ((line = in.readLine()) != null) {
+                                Log.d("ServerActivity", line);
+                                handler.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        // do whatever you want to the front end
+                                        // this is where you can be creative
+                                    }
+                                });
+                            }
+                            break;
+                        } catch (Exception e) {
+                            handler.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    serverStatus.setText("Oops. Connection interrupted. Please reconnect your phones.");
+                                }
+                            });
+                            e.printStackTrace();
+                        }
+                    }
+                } else {
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            serverStatus.setText("Couldn't detect internet connection.");
+                        }
+                    });
+                }
+            } catch (Exception e) {
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        serverStatus.setText("Error");
+                    }
+                });
+                e.printStackTrace();
+            }
+        }
+    }
+
+    // gets the ip address of your phone's network
+    private String getLocalIpAddress() {
+        try {
+            for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements();) {
+                NetworkInterface intf = en.nextElement();
+                for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements();) {
+                    InetAddress inetAddress = enumIpAddr.nextElement();
+                    if (!inetAddress.isLoopbackAddress()) { return inetAddress.getHostAddress().toString(); }
+                }
+            }
+        } catch (SocketException ex) {
+            Log.e("ServerActivity", ex.toString());
+        }
+        return null;
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        try {
+            // make sure you close the socket upon exiting
+            if(serverSocket!=null)
+                serverSocket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

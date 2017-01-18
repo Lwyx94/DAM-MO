@@ -34,11 +34,19 @@
             android:text="@string/vs_ai"/>
 
         <Button
-            android:id="@+id/btnTest"
+            android:id="@+id/btnTestServidor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:textSize="30sp"
-            android:text="TEST"/>
+            android:text="TEST SERVIDOR"/>
+
+        <Button
+            android:id="@+id/btnTestCliente"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textSize="30sp"
+            android:text="TEST CLIENTE"/>
     </LinearLayout>
 </RelativeLayout>

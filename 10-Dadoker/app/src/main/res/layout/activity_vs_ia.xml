@@ -16,7 +16,7 @@
         android:layout_weight="2"
         android:background="#FF5555">
 
-        <es.iesnervion.albertonavarro.a10_dadoker.Dado
+        <es.iesnervion.albertonavarro.a10_dadoker.Models.Dado
             android:layout_gravity="top"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -26,7 +26,7 @@
             android:layout_weight="1"
             android:id="@+id/dadoIA1"/>
 
-        <es.iesnervion.albertonavarro.a10_dadoker.Dado
+        <es.iesnervion.albertonavarro.a10_dadoker.Models.Dado
             android:layout_gravity="top"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -36,7 +36,7 @@
             android:layout_weight="1"
             android:id="@+id/dadoIA2"/>
 
-        <es.iesnervion.albertonavarro.a10_dadoker.Dado
+        <es.iesnervion.albertonavarro.a10_dadoker.Models.Dado
             android:layout_gravity="top"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -47,7 +47,7 @@
             android:layout_weight="1"
             android:id="@+id/dadoIA3"/>
 
-        <es.iesnervion.albertonavarro.a10_dadoker.Dado
+        <es.iesnervion.albertonavarro.a10_dadoker.Models.Dado
             android:layout_gravity="top"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -58,7 +58,7 @@
             android:layout_weight="1"
             android:id="@+id/dadoIA4"/>
 
-        <es.iesnervion.albertonavarro.a10_dadoker.Dado
+        <es.iesnervion.albertonavarro.a10_dadoker.Models.Dado
             android:layout_gravity="top"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -192,7 +192,7 @@
         android:layout_weight="2"
         android:background="#55FF55">
 
-        <es.iesnervion.albertonavarro.a10_dadoker.Dado
+        <es.iesnervion.albertonavarro.a10_dadoker.Models.Dado
             android:layout_gravity="bottom"
             android:textColor="@android:color/black"
             android:layout_width="0dp"
@@ -203,7 +203,7 @@
             android:layout_weight="1"
             android:id="@+id/dado1"/>
 
-        <es.iesnervion.albertonavarro.a10_dadoker.Dado
+        <es.iesnervion.albertonavarro.a10_dadoker.Models.Dado
             android:layout_gravity="bottom"
             android:textColor="@android:color/black"
             android:layout_width="0dp"
@@ -215,7 +215,7 @@
             android:layout_weight="1"
             android:id="@+id/dado2"/>
 
-        <es.iesnervion.albertonavarro.a10_dadoker.Dado
+        <es.iesnervion.albertonavarro.a10_dadoker.Models.Dado
             android:layout_gravity="bottom"
             android:textColor="@android:color/black"
             android:layout_width="0dp"
@@ -227,7 +227,7 @@
             android:layout_weight="1"
             android:id="@+id/dado3"/>
 
-        <es.iesnervion.albertonavarro.a10_dadoker.Dado
+        <es.iesnervion.albertonavarro.a10_dadoker.Models.Dado
             android:layout_gravity="bottom"
             android:textColor="@android:color/black"
             android:layout_width="0dp"
@@ -239,7 +239,7 @@
             android:layout_weight="1"
             android:id="@+id/dado4"/>
 
-        <es.iesnervion.albertonavarro.a10_dadoker.Dado
+        <es.iesnervion.albertonavarro.a10_dadoker.Models.Dado
             android:layout_gravity="bottom"
             android:textColor="@android:color/black"
             android:layout_width="0dp"

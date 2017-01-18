@@ -1,23 +1,92 @@
 package es.iesnervion.albertonavarro.a10_dadoker;
 
-import android.content.DialogInterface;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
+
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.util.Log;
 import android.widget.TextView;
 
-import java.util.Arrays;
-import java.util.Random;
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
 
-//TODO: Implementar for extendido -_-
-public class VsHumano extends AppCompatActivity implements View.OnClickListener{
-    private Button btnRoll;
+public class VsHumano extends VsIA{
+
+    private TextView txtServer;
+    private Servidor servidor;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        txtServer = (TextView)findViewById(R.id.txtResIA);
+        servidor = new Servidor(this, this);
+    }
+
+    public void setearTexto(String testo){
+        txtServer.setText(testo);
+    }
+
+
+    public static class Servidor extends AsyncTask {
+
+        private Context context;
+        private TextView statusText;
+        private VsHumano activity;
+
+
+
+        public Servidor(Context context, VsHumano activity) {
+            this.context = context;
+            //this.statusText = (TextView) statusText;
+            this.activity = activity;
+        }
+
+        @Override
+        protected Object doInBackground(Object[] objects) {
+            try {
+
+                /**
+                 * Create a server socket and wait for client connections. This
+                 * call blocks until a connection is accepted from a client
+                 */
+                activity.setearTexto("Esperando al cliente...");
+                ServerSocket serverSocket = new ServerSocket(8888);
+                Socket client = serverSocket.accept();
+
+                /**
+                 * If this code is reached, a client has connected and transferred data
+                 * Save the input stream from the client as a JPEG file
+                 */
+                activity.setearTexto("El Cliente ha llegado!");
+                serverSocket.close();
+
+            } catch (IOException e) {
+                Log.e("ERROR", e.getMessage());
+            }
+            return null;
+        }
+
+        /**
+         * Start activity that can handle the JPEG image
+         */
+        protected void onPostExecute(String result) {
+            if (result != null) {
+                statusText.setText("File copied - " + result);
+                Intent intent = new Intent();
+                intent.setAction(android.content.Intent.ACTION_VIEW);
+                intent.setDataAndType(Uri.parse("file://" + result), "image/*");
+                context.startActivity(intent);
+            }
+        }
+
+    }
+
+
+}
+    /*private Button btnRoll;
     private Dado dado1, dado2, dado3, dado4, dado5;
     private TextView txtResHum, txtResIA;
     private Dado dadoIA1, dadoIA2, dadoIA3, dadoIA4, dadoIA5;
@@ -183,7 +252,7 @@ public class VsHumano extends AppCompatActivity implements View.OnClickListener{
         }*/
 
         //IA
-        for(Dado dado: dadosIA)
+        /*for(Dado dado: dadosIA)
             dado.setValor(ale.nextInt(6)+1);
 
 
@@ -231,12 +300,12 @@ public class VsHumano extends AppCompatActivity implements View.OnClickListener{
                     dado.setImageResource(R.drawable.dado6);
                     break;
             }
-        }
+        }*/
 
-        mostrarResultado();
-        actualizarVida();
+        //mostrarResultado();
+        //actualizarVida();
 
-        if(vidaH==0 || vidaIA==0){
+        /*if(vidaH==0 || vidaIA==0){
             String titulo = (vidaH==0)?"¡DERROTA!": "¡VICTORIA!";
             String mensaje = (vidaH==0)?"¡Has perdido!": "¡Has ganado!";
             new AlertDialog.Builder(this)
@@ -253,9 +322,9 @@ public class VsHumano extends AppCompatActivity implements View.OnClickListener{
 
         primeraTirada=!primeraTirada;
         btnRoll.setTextColor(Color.GREEN);
-    }
+    }*/
 
-    private void actualizarVida() {
+    /*private void actualizarVida() {
         int cont = 0;
         for(ImageView cor: corasonesH){
             if(cont < vidaH)
@@ -275,9 +344,9 @@ public class VsHumano extends AppCompatActivity implements View.OnClickListener{
             cont++;
         }
 
-    }
+    }*/
 
-    private void mostrarResultado() {
+    /*private void mostrarResultado() {
         int[] manoH = obtenerMano(dados);
         int[] manoIA = obtenerMano(dadosIA);
 
@@ -305,15 +374,13 @@ public class VsHumano extends AppCompatActivity implements View.OnClickListener{
             case 3:
                 res="¡EMPATE! ¡AW YEAH!";
                 break;
-        }
-       /* if(!primeraTirada)
-            Toast.makeText(this, res, Toast.LENGTH_LONG).show();*/
+        }*/
 
-    }
+    //}
 
 
 
-    private String obtenerResultado(int[] mano) {
+    /*private String obtenerResultado(int[] mano) {
         String res = "resultado";
         switch (mano[0]){
             case 0:
@@ -347,9 +414,9 @@ public class VsHumano extends AppCompatActivity implements View.OnClickListener{
         }
         return res;
 
-    }
+    }*/
 
-    private int humanoGanador(int[] manoH, int[] manoIA) {
+    /*private int humanoGanador(int[] manoH, int[] manoIA) {
         int res = 3;
         if(manoH[0]>manoIA[0])
             res=1;
@@ -369,7 +436,7 @@ public class VsHumano extends AppCompatActivity implements View.OnClickListener{
         }
 
         return res;
-    }
+    }*/
 
     /**
      *
@@ -383,7 +450,7 @@ public class VsHumano extends AppCompatActivity implements View.OnClickListener{
      *         7-Poker
      *         8-RePoker
      */
-    private int[] obtenerMano(Dado[] array){
+    /*private int[] obtenerMano(Dado[] array){
         int[] res = new int[3];
         int numRep1=0, numRep2=0;
         int cuent1=1, cuent2=1;
@@ -460,4 +527,5 @@ public class VsHumano extends AppCompatActivity implements View.OnClickListener{
         }
         return res;
     }
-}
+}*/
+

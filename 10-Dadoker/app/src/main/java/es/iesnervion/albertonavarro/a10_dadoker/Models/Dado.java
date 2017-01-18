@@ -1,4 +1,4 @@
-package es.iesnervion.albertonavarro.a10_dadoker;
+package es.iesnervion.albertonavarro.a10_dadoker.Models;
 
 import android.content.Context;
 import android.util.AttributeSet;

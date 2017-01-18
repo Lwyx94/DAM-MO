@@ -1,8 +1,7 @@
 package es.iesnervion.albertonavarro.a10_dadoker;
 
-import android.bluetooth.BluetoothClass;
+import android.content.Intent;
 import android.content.IntentFilter;
-import android.net.wifi.p2p.WifiP2pDevice;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,9 +13,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.Collection;
 
-public class BuscaJugadores extends AppCompatActivity implements View.OnClickListener {
+import es.iesnervion.albertonavarro.a10_dadoker.Tests.ServerActivity;
+import es.iesnervion.albertonavarro.a10_dadoker.Utiles.Recibidor;
+
+public class BuscaJugadores extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
 
     WifiP2pManager mManager;
     WifiP2pManager.Channel mChannel;
@@ -36,12 +37,6 @@ public class BuscaJugadores extends AppCompatActivity implements View.OnClickLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_busca_jugadores);
-
-        //TEST
-        direcciones.add("Dispositivo Uno");
-        direcciones.add("Dispositivo TWo");
-        direcciones.add("Dispositivo Trois");
-        direcciones.add("Dispositivo Dummy");
 
         txtInfo= (TextView) findViewById(R.id.txtInformacion);
         txtLista= (TextView) findViewById(R.id.txtLista);
@@ -66,18 +61,9 @@ public class BuscaJugadores extends AppCompatActivity implements View.OnClickLis
                 android.R.layout.simple_list_item_1, android.R.id.text1, direcciones);
 
         lista.setAdapter(adapter);
+        new Intent(this, ServerActivity.class);
 
-        lista.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view,int position, long id) {
-
-                String  itemValue    = (String) lista.getItemAtPosition(position);
-                mReceiver.conectarse(itemValue);
-
-            }
-
-        });
+        lista.setOnItemClickListener(this);
 
 
     }
@@ -124,4 +110,14 @@ public class BuscaJugadores extends AppCompatActivity implements View.OnClickLis
     }
 
 
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view,int position, long id) {
+
+        String itemValue = (String) lista.getItemAtPosition(position);
+        if(mReceiver.conectarse(itemValue)){
+            startActivity(new Intent(this, VsHumano.class));
+        }
+
+
+    }
 }

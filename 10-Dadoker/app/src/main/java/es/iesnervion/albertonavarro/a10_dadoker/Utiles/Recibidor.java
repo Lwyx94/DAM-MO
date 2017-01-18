@@ -1,4 +1,4 @@
-package es.iesnervion.albertonavarro.a10_dadoker;
+package es.iesnervion.albertonavarro.a10_dadoker.Utiles;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -11,11 +11,14 @@ import android.util.Log;
 
 import java.util.ArrayList;
 
+import es.iesnervion.albertonavarro.a10_dadoker.BuscaJugadores;
+
 public class Recibidor extends BroadcastReceiver {
 
     private WifiP2pManager mManager;
     private WifiP2pManager.Channel mChannel;
     private BuscaJugadores mActivity;
+    private boolean conexion = false;
 
     public Recibidor(WifiP2pManager manager, WifiP2pManager.Channel channel,
                      BuscaJugadores activity) {
@@ -53,6 +56,7 @@ public class Recibidor extends BroadcastReceiver {
                 });
             }
         }
+
     }
 
     public void desubrirParejas()
@@ -60,33 +64,35 @@ public class Recibidor extends BroadcastReceiver {
         mManager.discoverPeers(mChannel, new WifiP2pManager.ActionListener() {
             @Override
             public void onSuccess() {
-                Log.e("WOWOW", "WEWEWE");
+                Log.e("WOWOWO", "Se están buscando parejas...");
             }
 
             @Override
             public void onFailure(int reasonCode) {
-                Log.e("WIWIWI", "BOOOO");
+                Log.e("WEWEWEW", "Algo va mal");
             }
         });
     }
 
-    public void conectarse(String direccion){
+    public boolean conectarse(String direccion){
         WifiP2pConfig config = new WifiP2pConfig();
         config.deviceAddress = direccion;
         mManager.connect(mChannel, config, new WifiP2pManager.ActionListener() {
-
             @Override
             public void onSuccess() {
                 //success logic
                 Log.v("Jejeu", "Conexión exitosa!");
+                conexion = true;
             }
 
             @Override
             public void onFailure(int reason) {
                 //failure logic
                 Log.v("Vaia", "Conexión fracasada");
+                conexion = false;
             }
         });
+        return conexion;
     }
 
 }
