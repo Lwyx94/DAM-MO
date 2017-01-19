@@ -3,6 +3,10 @@ package es.iesnervion.albertonavarro.a10_dadoker;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
+import android.media.SoundPool;
+import android.os.Build;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -20,7 +24,6 @@ import java.util.Random;
 
 import es.iesnervion.albertonavarro.a10_dadoker.Models.Dado;
 
-//TODO: Implementar for extendido -_-
 public class VsIA extends AppCompatActivity implements View.OnClickListener{
     private Button btnRoll;
     private Dado dado1, dado2, dado3, dado4, dado5;
@@ -36,8 +39,12 @@ public class VsIA extends AppCompatActivity implements View.OnClickListener{
     private Random ale = new Random();
     private int vidaH = 5;
     private int vidaIA = 5;
-    private boolean primeraTirada = true;
+    private boolean primeraTirada = true, tirando = false;
     private Animation animDado;
+    private SoundPool soundPool;
+    private  int idSoundRoll, idMusicVictory, idMusicLose;
+    private int colorSel = Color.LTGRAY;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,9 +71,29 @@ public class VsIA extends AppCompatActivity implements View.OnClickListener{
             @Override
             public void onAnimationEnd(Animation arg0) {
                 actualizarValores();
+
+                mostrarResultado();
+                actualizarVida();
+
+                if(primeraTirada)
+                    movimientoIA();
+
+                finalizarRonda();
             }
         });
 
+        //Sonido
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            soundPool = new SoundPool.Builder()
+                    .setMaxStreams(10)
+                    .build();
+        } else {
+            soundPool = new SoundPool(10, AudioManager.STREAM_MUSIC, 1);
+        }
+
+        idSoundRoll = soundPool.load(this, R.raw.roll, 1);
+        idMusicLose = soundPool.load(this, R.raw.lose, 1);
+        idMusicVictory = soundPool.load(this, R.raw.victory, 1);
 
         //Dados del usaurio
         dado1 = (Dado) findViewById(R.id.dado1);
@@ -122,17 +149,46 @@ public class VsIA extends AppCompatActivity implements View.OnClickListener{
         corasonesIA[4] = corIA5;
     }
 
+    private void finalizarRonda() {
+        if(vidaH==0 || vidaIA==0){
+            String titulo = (vidaH==0)?"¡DERROTA!": "¡VICTORIA!";
+            String mensaje = (vidaH==0)?"¡Has perdido!": "¡Has ganado!";
+            if(vidaH==0)
+                soundPool.play(idMusicLose, 1, 1, 1, 0, 1);
+            else
+                soundPool.play(idMusicVictory, 1, 1, 1, 0, 1);
+
+
+            new AlertDialog.Builder(this)
+                    .setTitle(titulo)
+                    .setMessage(mensaje)
+                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            finish();
+                        }
+                    })
+                    .show();
+        }else {
+            primeraTirada = !primeraTirada;
+            btnRoll.setTextColor(Color.GREEN);
+            tirando = false;
+        }
+    }
+
 
     @Override
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.btnRoll:
-                tirarDados();
+                if(!tirando) {
+                    tirando=true;
+                    tirarDados();
+                }
                 break;
             case R.id.dado1:
                 if(!primeraTirada) {
                     if (dado1.getColorFilter()==null)
-                        dado1.setColorFilter(Color.YELLOW, PorterDuff.Mode.MULTIPLY);
+                        dado1.setColorFilter(colorSel, PorterDuff.Mode.MULTIPLY);
                     else
                         dado1.clearColorFilter();
                 }
@@ -140,7 +196,7 @@ public class VsIA extends AppCompatActivity implements View.OnClickListener{
             case R.id.dado2:
                 if(!primeraTirada) {
                     if (dado2.getColorFilter()==null)
-                        dado2.setColorFilter(Color.YELLOW, PorterDuff.Mode.MULTIPLY);
+                        dado2.setColorFilter(colorSel, PorterDuff.Mode.MULTIPLY);
                     else
                         dado2.clearColorFilter();
                 }
@@ -148,7 +204,7 @@ public class VsIA extends AppCompatActivity implements View.OnClickListener{
             case R.id.dado3:
                 if(!primeraTirada) {
                     if (dado3.getColorFilter()==null)
-                        dado3.setColorFilter(Color.YELLOW, PorterDuff.Mode.MULTIPLY);
+                        dado3.setColorFilter(colorSel, PorterDuff.Mode.MULTIPLY);
                     else
                         dado3.clearColorFilter();
                 }
@@ -156,7 +212,7 @@ public class VsIA extends AppCompatActivity implements View.OnClickListener{
             case R.id.dado4:
                 if(!primeraTirada) {
                     if (dado4.getColorFilter()==null)
-                        dado4.setColorFilter(Color.YELLOW, PorterDuff.Mode.MULTIPLY);
+                        dado4.setColorFilter(colorSel, PorterDuff.Mode.MULTIPLY);
                     else
                         dado4.clearColorFilter();
                 }
@@ -164,7 +220,7 @@ public class VsIA extends AppCompatActivity implements View.OnClickListener{
             case R.id.dado5:
                 if(!primeraTirada) {
                     if (dado5.getColorFilter()==null)
-                        dado5.setColorFilter(Color.YELLOW, PorterDuff.Mode.MULTIPLY);
+                        dado5.setColorFilter(Color.GRAY, PorterDuff.Mode.MULTIPLY);
                     else
                         dado5.clearColorFilter();
                 }
@@ -173,7 +229,9 @@ public class VsIA extends AppCompatActivity implements View.OnClickListener{
     }
 
     private void tirarDados() {
-        btnRoll.setTextColor(Color.YELLOW);
+        soundPool.play(idSoundRoll, 1, 1, 1, 0, 1);
+
+        btnRoll.setTextColor(colorSel);
 
         if(primeraTirada) {
             tableroH.setBackgroundColor(Color.LTGRAY);
@@ -182,30 +240,39 @@ public class VsIA extends AppCompatActivity implements View.OnClickListener{
 
         //Usuario
        for (Dado dado : dados) {
-           if (primeraTirada || dado.getColorFilter() == null) {
+           if (primeraTirada || dado.getColorFilter() != null) {
                dado.startAnimation(animDado);
                dado.setValor(ale.nextInt(6) + 1);
-           }
-           if (dado.getColorFilter() != null)
                dado.clearColorFilter();
+           }
        }
 
 
         //IA
         for(Dado dado: dadosIA) {
-            dado.setValor(ale.nextInt(6) + 1);
-            dado.startAnimation(animDado);
+            if (primeraTirada || dado.getColorFilter() != null) {
+                dado.startAnimation(animDado);
+                dado.setValor(ale.nextInt(6) + 1);
+                dado.clearColorFilter();
+            }
         }
 
 
 
-
+        /**MOVIDO A ANIMARTION END**/
+        /*
         mostrarResultado();
         actualizarVida();
 
         if(vidaH==0 || vidaIA==0){
             String titulo = (vidaH==0)?"¡DERROTA!": "¡VICTORIA!";
             String mensaje = (vidaH==0)?"¡Has perdido!": "¡Has ganado!";
+            if(vidaH==0)
+                mpLose.start();
+            else
+                mpVictory.start();
+
+
             new AlertDialog.Builder(this)
                     .setTitle(titulo)
                     .setMessage(mensaje)
@@ -220,6 +287,7 @@ public class VsIA extends AppCompatActivity implements View.OnClickListener{
 
         primeraTirada=!primeraTirada;
         btnRoll.setTextColor(Color.GREEN);
+        */
     }
 
     private void actualizarVida() {
@@ -364,6 +432,12 @@ public class VsIA extends AppCompatActivity implements View.OnClickListener{
 
     }
 
+    /**
+     * @return  1- ganador humano
+     *          2- ganador máquina
+     *          3- empate
+     */
+
     private int humanoGanador(int[] manoH, int[] manoIA) {
         int res = 3;
         if(manoH[0]>manoIA[0])
@@ -371,9 +445,9 @@ public class VsIA extends AppCompatActivity implements View.OnClickListener{
         else if(manoH[0]<manoIA[0])
             res=2;
         else {
-            if(manoH[1]>manoIA[1]||(manoH[1]==1&&manoH[1]!=manoIA[1]))
+            if((manoH[1]>manoIA[1]&&(manoH[0]!=6&&manoIA[0]!=6))||(manoH[2]==1&&manoH[2]!=manoIA[2]&&(manoH[0]!=6&&manoIA[0]!=6))||(manoH[0]==6&&manoIA[0]==6&&manoH[1]==1&&manoH[1]!=manoIA[1]))
                 res=1;
-            else if(manoH[1]<manoIA[1]||(manoIA[1]==1&&manoIA[1]!=manoH[1]))
+            else if((manoH[1]<manoIA[1]&&(manoH[0]!=6&&manoIA[0]!=6))||(manoIA[2]==1&&manoIA[2]!=manoH[2]&&(manoH[0]!=6&&manoIA[0]!=6))||(manoH[0]==6&&manoIA[0]==6&&manoIA[1]==1&&manoIA[1]!=manoH[1]))
                 res=2;
             else {
                 if(manoH[2]>manoIA[2])
@@ -431,7 +505,9 @@ public class VsIA extends AppCompatActivity implements View.OnClickListener{
                 }else if(cuent1==2&&cuent2==3){//Full
                     res[0]=6;res[1]=numRep2;res[2]=numRep1;
                 }else if(numRep1>numRep2){//Doble Pareja
-                    res[0]=2;res[1]=numRep1;res[2]=numRep2;}
+                    res[0]=2;
+                    res[1]=numRep1;
+                    res[2]=numRep2;}
                 else{//Pareja
                     res[0]=2;res[1]=numRep2;res[2]=numRep1;}
 
@@ -457,8 +533,6 @@ public class VsIA extends AppCompatActivity implements View.OnClickListener{
         return res;
     }
 
-
-
     private int[] volcarNumeros(Dado[] array){
         int[] res = new int[5];
         for (int i=0; i<array.length; i++){
@@ -474,5 +548,44 @@ public class VsIA extends AppCompatActivity implements View.OnClickListener{
                 res = false;
         }
         return res;
+    }
+
+
+    /**
+     *
+     * @return 0-Nada
+     *         1-Pareja
+     *         2-DoblePareja
+     *         3-Trío
+     *         4-Escalera(1-5)
+     *         5-Escalera(2-6)
+     *         6-Full
+     *         7-Poker
+     *         8-RePoker
+     */
+    private void movimientoIA(){
+        int[] mano = obtenerMano(dadosIA);
+        switch (mano[0]){
+            case 0:
+                for(Dado dado:dadosIA)
+                    dado.setColorFilter(colorSel, PorterDuff.Mode.MULTIPLY);
+                break;
+            case 1:
+            case 3:
+            case 7:
+            case 8:
+                for(Dado dado:dadosIA){
+                    if(dado.getValor()!=mano[1])
+                        dado.setColorFilter(colorSel, PorterDuff.Mode.MULTIPLY);
+                }
+                break;
+            case 2:
+            case 6:
+                for(Dado dado:dadosIA){
+                    if(dado.getValor()!=mano[1]&&dado.getValor()!=mano[2])
+                        dado.setColorFilter(colorSel, PorterDuff.Mode.MULTIPLY);
+                }
+                break;
+        }
     }
 }
