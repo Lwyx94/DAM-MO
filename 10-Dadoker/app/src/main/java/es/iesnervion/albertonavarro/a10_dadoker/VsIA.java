@@ -7,6 +7,8 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -35,11 +37,13 @@ public class VsIA extends AppCompatActivity implements View.OnClickListener{
     private int vidaH = 5;
     private int vidaIA = 5;
     private boolean primeraTirada = true;
+    private Animation animDado;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vs_ia);
+
         btnRoll = (Button) findViewById(R.id.btnRoll);
         btnRoll.setOnClickListener(this);
 
@@ -47,6 +51,22 @@ public class VsIA extends AppCompatActivity implements View.OnClickListener{
         txtResIA = (TextView) findViewById(R.id.txtResIA);
         tableroIA = (LinearLayout) findViewById(R.id.tableroIA);
         tableroH = (LinearLayout) findViewById(R.id.tableroH);
+
+        //Animasion
+        animDado = AnimationUtils.loadAnimation(this, R.anim.anim_dado);
+        animDado.setAnimationListener(new Animation.AnimationListener(){
+            @Override
+            public void onAnimationStart(Animation arg0) {
+            }
+            @Override
+            public void onAnimationRepeat(Animation arg0) {
+            }
+            @Override
+            public void onAnimationEnd(Animation arg0) {
+                actualizarValores();
+            }
+        });
+
 
         //Dados del usaurio
         dado1 = (Dado) findViewById(R.id.dado1);
@@ -162,34 +182,69 @@ public class VsIA extends AppCompatActivity implements View.OnClickListener{
 
         //Usuario
        for (Dado dado : dados) {
-           if (primeraTirada || dado.getColorFilter() == null)
+           if (primeraTirada || dado.getColorFilter() == null) {
+               dado.startAnimation(animDado);
                dado.setValor(ale.nextInt(6) + 1);
+           }
            if (dado.getColorFilter() != null)
                dado.clearColorFilter();
        }
 
-        /*}else {
-            //if (dado1.getCurrentTextColor() == Color.BLACK)
-                dado1.setValor(ale.nextInt(6) + 1);
-            //if (dado2.getCurrentTextColor() == Color.BLACK)
-                dado1.setValor(ale.nextInt(6) + 1);
-            //if (dado3.getCurrentTextColor() == Color.BLACK)
-                dado1.setValor(ale.nextInt(6) + 1);
-            //if (dado4.getCurrentTextColor() == Color.BLACK)
-                dado1.setValor(ale.nextInt(6) + 1);
-            //if (dado5.getCurrentTextColor() == Color.BLACK)
-                dado1.setValor(ale.nextInt(6) + 1);
-
-            for(TextView tv : dados)
-                tv.setTextColor(Color.BLACK);
-
-        }*/
 
         //IA
-        for(Dado dado: dadosIA)
-            dado.setValor(ale.nextInt(6)+1);
+        for(Dado dado: dadosIA) {
+            dado.setValor(ale.nextInt(6) + 1);
+            dado.startAnimation(animDado);
+        }
 
 
+
+
+        mostrarResultado();
+        actualizarVida();
+
+        if(vidaH==0 || vidaIA==0){
+            String titulo = (vidaH==0)?"¡DERROTA!": "¡VICTORIA!";
+            String mensaje = (vidaH==0)?"¡Has perdido!": "¡Has ganado!";
+            new AlertDialog.Builder(this)
+                    .setTitle(titulo)
+                    .setMessage(mensaje)
+                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            finish();
+                        }
+                    })
+                    .show();
+        }
+
+
+        primeraTirada=!primeraTirada;
+        btnRoll.setTextColor(Color.GREEN);
+    }
+
+    private void actualizarVida() {
+        int cont = 0;
+        for(ImageView cor: corasonesH){
+            if(cont < vidaH)
+                cor.setImageResource(R.drawable.corasonrojo);
+            else
+                cor.setImageResource(R.drawable.corasonnegro);
+            cont++;
+        }
+
+        cont = 0;
+
+        for(ImageView cor: corasonesIA){
+            if(cont < vidaIA)
+                cor.setImageResource(R.drawable.corasonrojo);
+            else
+                cor.setImageResource(R.drawable.corasonnegro);
+            cont++;
+        }
+
+    }
+
+    private void actualizarValores(){
         for(Dado dado : dados){
             switch (dado.getValor()){
                 case 1:
@@ -235,49 +290,6 @@ public class VsIA extends AppCompatActivity implements View.OnClickListener{
                     break;
             }
         }
-
-        mostrarResultado();
-        actualizarVida();
-
-        if(vidaH==0 || vidaIA==0){
-            String titulo = (vidaH==0)?"¡DERROTA!": "¡VICTORIA!";
-            String mensaje = (vidaH==0)?"¡Has perdido!": "¡Has ganado!";
-            new AlertDialog.Builder(this)
-                    .setTitle(titulo)
-                    .setMessage(mensaje)
-                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            finish();
-                        }
-                    })
-                    .show();
-        }
-
-
-        primeraTirada=!primeraTirada;
-        btnRoll.setTextColor(Color.GREEN);
-    }
-
-    private void actualizarVida() {
-        int cont = 0;
-        for(ImageView cor: corasonesH){
-            if(cont < vidaH)
-                cor.setImageResource(R.drawable.corasonrojo);
-            else
-                cor.setImageResource(R.drawable.corasonnegro);
-            cont++;
-        }
-
-        cont = 0;
-
-        for(ImageView cor: corasonesIA){
-            if(cont < vidaIA)
-                cor.setImageResource(R.drawable.corasonrojo);
-            else
-                cor.setImageResource(R.drawable.corasonnegro);
-            cont++;
-        }
-
     }
 
     private void mostrarResultado() {

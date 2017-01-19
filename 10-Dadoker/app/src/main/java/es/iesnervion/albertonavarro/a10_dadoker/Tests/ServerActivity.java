@@ -52,7 +52,7 @@ public class ServerActivity extends AppCompatActivity {
                     handler.post(new Runnable() {
                         @Override
                         public void run() {
-                            serverStatus.setText("Listening on IP: " + SERVERIP);
+                            serverStatus.setText("Escuchando en IP: " + SERVERIP);
                         }
                     });
                     serverSocket = new ServerSocket(SERVERPORT);
@@ -62,7 +62,7 @@ public class ServerActivity extends AppCompatActivity {
                         handler.post(new Runnable() {
                             @Override
                             public void run() {
-                                serverStatus.setText("Connected.");
+                                serverStatus.setText("Conectado.");
                             }
                         });
 
@@ -84,7 +84,7 @@ public class ServerActivity extends AppCompatActivity {
                             handler.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    serverStatus.setText("Oops. Connection interrupted. Please reconnect your phones.");
+                                    serverStatus.setText("Oh Vaya. Se ha interrumpido la conexión.");
                                 }
                             });
                             e.printStackTrace();
@@ -94,7 +94,7 @@ public class ServerActivity extends AppCompatActivity {
                     handler.post(new Runnable() {
                         @Override
                         public void run() {
-                            serverStatus.setText("Couldn't detect internet connection.");
+                            serverStatus.setText("No se pudo detectar ninguna conexion a Internet.");
                         }
                     });
                 }
