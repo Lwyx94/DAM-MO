@@ -156,7 +156,7 @@ public class VsIA extends AppCompatActivity implements View.OnClickListener{
             if(vidaH==0)
                 soundPool.play(idMusicLose, 1, 1, 1, 0, 1);
             else
-                soundPool.play(idMusicVictory, 1, 1, 1, 0, 1);
+                soundPool.play(idMusicVictory,0.5f, 0.5f, 1, 0, 1);
 
 
             new AlertDialog.Builder(this)
@@ -169,8 +169,9 @@ public class VsIA extends AppCompatActivity implements View.OnClickListener{
                     })
                     .show();
         }else {
-            primeraTirada = !primeraTirada;
+            btnRoll.setText("TIRAR");
             btnRoll.setTextColor(Color.GREEN);
+            primeraTirada = !primeraTirada;
             tirando = false;
         }
     }
@@ -181,7 +182,6 @@ public class VsIA extends AppCompatActivity implements View.OnClickListener{
         switch (view.getId()){
             case R.id.btnRoll:
                 if(!tirando) {
-                    tirando=true;
                     tirarDados();
                 }
                 break;
@@ -220,7 +220,7 @@ public class VsIA extends AppCompatActivity implements View.OnClickListener{
             case R.id.dado5:
                 if(!primeraTirada) {
                     if (dado5.getColorFilter()==null)
-                        dado5.setColorFilter(Color.GRAY, PorterDuff.Mode.MULTIPLY);
+                        dado5.setColorFilter(colorSel, PorterDuff.Mode.MULTIPLY);
                     else
                         dado5.clearColorFilter();
                 }
@@ -229,14 +229,20 @@ public class VsIA extends AppCompatActivity implements View.OnClickListener{
     }
 
     private void tirarDados() {
+        tirando=true;
+        btnRoll.setText("TIRANDO");
+
+        soundPool.stop(idSoundRoll);
         soundPool.play(idSoundRoll, 1, 1, 1, 0, 1);
 
-        btnRoll.setTextColor(colorSel);
+        btnRoll.setTextColor(Color.GRAY);
 
         if(primeraTirada) {
             tableroH.setBackgroundColor(Color.LTGRAY);
             tableroIA.setBackgroundColor(Color.LTGRAY);
         }
+
+
 
         //Usuario
        for (Dado dado : dados) {
@@ -258,36 +264,6 @@ public class VsIA extends AppCompatActivity implements View.OnClickListener{
         }
 
 
-
-        /**MOVIDO A ANIMARTION END**/
-        /*
-        mostrarResultado();
-        actualizarVida();
-
-        if(vidaH==0 || vidaIA==0){
-            String titulo = (vidaH==0)?"¡DERROTA!": "¡VICTORIA!";
-            String mensaje = (vidaH==0)?"¡Has perdido!": "¡Has ganado!";
-            if(vidaH==0)
-                mpLose.start();
-            else
-                mpVictory.start();
-
-
-            new AlertDialog.Builder(this)
-                    .setTitle(titulo)
-                    .setMessage(mensaje)
-                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            finish();
-                        }
-                    })
-                    .show();
-        }
-
-
-        primeraTirada=!primeraTirada;
-        btnRoll.setTextColor(Color.GREEN);
-        */
     }
 
     private void actualizarVida() {
