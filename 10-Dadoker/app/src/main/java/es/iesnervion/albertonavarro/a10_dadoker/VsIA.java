@@ -19,6 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 
@@ -248,7 +249,7 @@ public class VsIA extends AppCompatActivity implements View.OnClickListener{
        for (Dado dado : dados) {
            if (primeraTirada || dado.getColorFilter() != null) {
                dado.startAnimation(animDado);
-               dado.setValor(ale.nextInt(6) + 1);
+               dado.setValor(ale.nextInt(6) + 2);
                dado.clearColorFilter();
            }
        }
@@ -258,7 +259,7 @@ public class VsIA extends AppCompatActivity implements View.OnClickListener{
         for(Dado dado: dadosIA) {
             if (primeraTirada || dado.getColorFilter() != null) {
                 dado.startAnimation(animDado);
-                dado.setValor(ale.nextInt(6) + 1);
+                dado.setValor(ale.nextInt(6) + 2);
                 dado.clearColorFilter();
             }
         }
@@ -291,7 +292,7 @@ public class VsIA extends AppCompatActivity implements View.OnClickListener{
     private void actualizarValores(){
         for(Dado dado : dados){
             switch (dado.getValor()){
-                case 1:
+                case 7:
                     dado.setImageResource(R.drawable.dado1);
                     break;
                 case 2:
@@ -314,7 +315,7 @@ public class VsIA extends AppCompatActivity implements View.OnClickListener{
 
         for(Dado dado : dadosIA){
             switch (dado.getValor()){
-                case 1:
+                case 7:
                     dado.setImageResource(R.drawable.dado1);
                     break;
                 case 2:
@@ -379,14 +380,23 @@ public class VsIA extends AppCompatActivity implements View.OnClickListener{
                res = "Vaya mierda...";
                 break;
             case 1:
-                res = "Pareja de "+mano[1];
+                if(mano[1]==7)
+                    res = "Pareja de Ases";
+                else
+                    res = "Pareja de "+mano[1];
+
                 break;
             case 2:
                 res = "Doble Pareja";
                 break;
             case 3:
+                if(mano[1]==7)
+                    res = "Trío de Ases";
+                else
+                    res = "Trío de "+mano[1];
+
                 //res = "Trío ( ͡° ͜ʖ ͡°)";
-                res = "Trío de "+mano[1];
+                //res = "Trío de "+mano[1];
                 break;
             case 4:
                 res = "Escalera (1-5)";
@@ -398,10 +408,17 @@ public class VsIA extends AppCompatActivity implements View.OnClickListener{
                 res = "Full HD";
                 break;
             case 7:
-                res = "¡Póker de "+mano[1]+"!";
+                if(mano[1]==7)
+                    res = "¡Póker de Ases!";
+                else
+                    res = "¡Póker de "+mano[1]+"!";
                 break;
             case 8:
-                res = "¡¡¡REPÓKER DE "+mano[1]+"!!!";
+                if(mano[1]==7)
+                    res = "¡¡¡REPÓKER DE ASES!!!";
+                else
+                    res = "¡¡¡REPÓKER DE "+mano[1]+"!!!";
+
                 break;
         }
         return res;
@@ -413,8 +430,8 @@ public class VsIA extends AppCompatActivity implements View.OnClickListener{
      *          2- ganador máquina
      *          3- empate
      */
-
-    private int humanoGanador(int[] manoH, int[] manoIA) {
+    @Deprecated
+    private int humanoGanadorMal(int[] manoH, int[] manoIA) {
         int res = 3;
         if(manoH[0]>manoIA[0])
             res=1;
@@ -428,6 +445,29 @@ public class VsIA extends AppCompatActivity implements View.OnClickListener{
             else {
                 if(manoH[2]>manoIA[2])
                     res=1;
+                else if(manoH[2]<manoIA[2])
+                    res=2;
+            }
+        }
+
+        return res;
+    }
+
+
+    private int humanoGanador(int[] manoH, int[] manoIA) {
+        int res = 3;
+        if(manoH[0]>manoIA[0])
+            res=1;
+        else if(manoH[0]<manoIA[0])
+            res=2;
+        else {
+            if(manoH[1]>manoIA[1])
+            res=1;
+            else if(manoH[1]<manoIA[1])
+                res=2;
+            else {
+                if(manoH[2]>manoIA[2])
+                res=1;
                 else if(manoH[2]<manoIA[2])
                     res=2;
             }
@@ -456,10 +496,11 @@ public class VsIA extends AppCompatActivity implements View.OnClickListener{
         Arrays.sort(numeros);
 
         if(esEscalera(numeros)){
-            if(numeros[0]==1)
+            if(numeros[4]==7)
                 res[0]=4;
             else
                 res[0]=5;
+
         }else{
             for(int i = 1; i < numeros.length; i++) {
                 if(numeros[i] == numeros[i - 1]) {
@@ -517,12 +558,19 @@ public class VsIA extends AppCompatActivity implements View.OnClickListener{
         return res;
     }
 
+    //TODO: Reparar código Escalera
     private boolean esEscalera(int[] numeros) {
         boolean res = true;
-        for(int i = 0; i< numeros.length-1 && res; i++){
-            if(numeros[i]+1 != numeros[i+1])
+        int[] array = numeros;
+        if(array[4]==7) {
+            array[4] = 1;
+            Arrays.sort(array);
+        }
+        for (int i = 0; i < array.length - 1 && res; i++) {
+            if (array[i] + 1 != array[i + 1])
                 res = false;
         }
+
         return res;
     }
 
