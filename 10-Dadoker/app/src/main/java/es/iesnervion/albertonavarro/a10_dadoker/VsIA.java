@@ -562,10 +562,11 @@ public class VsIA extends AppCompatActivity implements View.OnClickListener{
     private boolean esEscalera(int[] numeros) {
         boolean res = true;
         int[] array = numeros;
-        if(array[4]==7) {
+        if(array[4]==7)
             array[4] = 1;
-            Arrays.sort(array);
-        }
+        
+        Arrays.sort(array);
+        
         for (int i = 0; i < array.length - 1 && res; i++) {
             if (array[i] + 1 != array[i + 1])
                 res = false;
