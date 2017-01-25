@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_vs_ia"
     android:layout_width="match_parent"
@@ -7,6 +8,12 @@
     tools:context="es.iesnervion.albertonavarro.a10_dadoker.VsIA"
     android:orientation="vertical">
 
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -251,4 +258,24 @@
             android:layout_weight="1"
             android:id="@+id/dado5"/>
     </LinearLayout>
-</LinearLayout>
+    </LinearLayout>
+    <!--<ImageView
+        android:id="@+id/bannerIA"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/win"
+        android:scaleType="fitXY"
+        android:layout_marginRight="-100dp"
+        android:layout_alignParentRight="true"/>-->
+
+    <TextView
+        android:id="@+id/txtResultado"
+        android:text="JUAS"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="90dp"
+
+        android:layout_marginRight="-100dp"
+        android:layout_alignParentRight="true"/>
+
+</RelativeLayout>

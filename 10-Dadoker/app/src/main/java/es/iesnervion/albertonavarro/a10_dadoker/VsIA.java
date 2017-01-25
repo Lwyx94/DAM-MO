@@ -4,7 +4,6 @@ import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.media.AudioManager;
-import android.media.MediaPlayer;
 import android.media.SoundPool;
 import android.os.Build;
 import android.support.v7.app.AlertDialog;
@@ -18,8 +17,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 
@@ -34,6 +33,8 @@ public class VsIA extends AppCompatActivity implements View.OnClickListener{
     private Dado[] dadosIA = new Dado[5];
     private ImageView cor1,cor2,cor3,cor4,cor5;
     private ImageView corIA1,corIA2,corIA3,corIA4,corIA5;
+    //private ImageView bannerIA;
+    private TextView txtGanIA;
     private ImageView[] corasonesH = new ImageView[5];
     private ImageView[] corasonesIA = new ImageView[5];
     private LinearLayout tableroIA, tableroH;
@@ -42,6 +43,7 @@ public class VsIA extends AppCompatActivity implements View.OnClickListener{
     private int vidaIA = 5;
     private boolean primeraTirada = true, tirando = false;
     private Animation animDado;
+    private Animation animBanner;
     private SoundPool soundPool;
     private  int idSoundRoll, idMusicVictory, idMusicLose;
     private int colorSel = Color.LTGRAY;
@@ -148,6 +150,9 @@ public class VsIA extends AppCompatActivity implements View.OnClickListener{
         corasonesIA[3] = corIA4;
         corIA5 = (ImageView) findViewById(R.id.corIA5);
         corasonesIA[4] = corIA5;
+
+        //Banners
+        txtGanIA = (TextView) findViewById(R.id.txtResultado);
     }
 
     private void finalizarRonda() {
@@ -243,8 +248,6 @@ public class VsIA extends AppCompatActivity implements View.OnClickListener{
             tableroIA.setBackgroundColor(Color.LTGRAY);
         }
 
-
-
         //Usuario
        for (Dado dado : dados) {
            if (primeraTirada || dado.getColorFilter() != null) {
@@ -338,6 +341,8 @@ public class VsIA extends AppCompatActivity implements View.OnClickListener{
     }
 
     private void mostrarResultado() {
+        animBanner = AnimationUtils.loadAnimation(this, R.anim.anim_banner);
+
         int[] manoH = obtenerMano(dados);
         int[] manoIA = obtenerMano(dadosIA);
 
@@ -366,12 +371,13 @@ public class VsIA extends AppCompatActivity implements View.OnClickListener{
                 res="¡EMPATE! ¡AW YEAH!";
                 break;
         }
+        if(!primeraTirada) {
+            txtGanIA.setText(res);
+            txtGanIA.startAnimation(animBanner);
+        }
        /* if(!primeraTirada)
             Toast.makeText(this, res, Toast.LENGTH_LONG).show();*/
-
     }
-
-
 
     private String obtenerResultado(int[] mano) {
         String res = "resultado";
@@ -558,20 +564,18 @@ public class VsIA extends AppCompatActivity implements View.OnClickListener{
         return res;
     }
 
-    //TODO: Reparar código Escalera
     private boolean esEscalera(int[] numeros) {
         boolean res = true;
-        int[] array = numeros;
-        if(array[4]==7)
-            array[4] = 1;
+        int[] arrayTemp = Arrays.copyOf(numeros, numeros.length);
+        if(arrayTemp[4]==7)
+            arrayTemp[4] = 1;
         
-        Arrays.sort(array);
+        Arrays.sort(arrayTemp);
         
-        for (int i = 0; i < array.length - 1 && res; i++) {
-            if (array[i] + 1 != array[i + 1])
+        for (int i = 0; i < arrayTemp.length - 1 && res; i++) {
+            if (arrayTemp[i] + 1 != arrayTemp[i + 1])
                 res = false;
         }
-
         return res;
     }
 
