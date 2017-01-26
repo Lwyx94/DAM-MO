@@ -8,6 +8,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -26,7 +27,8 @@ public class VsHumano extends VsIA{
     }
 
     public void setearTexto(String testo){
-        txtServer.setText(testo);
+        //txtServer.setText(testo);
+        Toast.makeText(this, testo, Toast.LENGTH_SHORT).show();
     }
 
 

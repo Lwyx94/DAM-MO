@@ -4,11 +4,17 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.ServerSocket;
@@ -18,9 +24,12 @@ import java.util.Enumeration;
 
 import es.iesnervion.albertonavarro.a10_dadoker.R;
 
-public class ServerActivity extends AppCompatActivity {
+public class ServerActivity extends AppCompatActivity implements View.OnClickListener {
 
     private TextView serverStatus;
+    private EditText etTesto;
+    private Button btnEnviarServer;
+    private boolean enviar = false;
 
     // default ip
     public static String SERVERIP = "10.0.2.15";
@@ -37,11 +46,24 @@ public class ServerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_server);
         serverStatus = (TextView) findViewById(R.id.server_status);
+        btnEnviarServer = (Button) findViewById(R.id.btnEnviarServer);
+        btnEnviarServer.setOnClickListener(this);
+        etTesto = (EditText) findViewById(R.id.txtMensajeServer);
 
         SERVERIP = getLocalIpAddress();
 
         Thread fst = new Thread(new ServerThread());
         fst.start();
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.btnEnviarServer:
+                if(!enviar)
+                    enviar=true;
+                break;
+        }
     }
 
     public class ServerThread implements Runnable {
@@ -58,7 +80,7 @@ public class ServerActivity extends AppCompatActivity {
                     serverSocket = new ServerSocket(SERVERPORT);
                     while (true) {
                         // listen for incoming clients
-                        Socket client = serverSocket.accept();
+                        final Socket client = serverSocket.accept();
                         handler.post(new Runnable() {
                             @Override
                             public void run() {
@@ -67,15 +89,29 @@ public class ServerActivity extends AppCompatActivity {
                         });
 
                         try {
+                            if(enviar && client.isConnected()) {
+                                PrintWriter out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(client.getOutputStream())), true);
+                                // where you issue the commands
+                                out.println(etTesto.getText().toString());
+                                Log.d("Servidor", "C: Enviado.");
+                                enviar = false;
+                            }
+
+
                             BufferedReader in = new BufferedReader(new InputStreamReader(client.getInputStream()));
                             String line;
                             while ((line = in.readLine()) != null) {
                                 Log.d("ServerActivity", line);
+                                //serverStatus.setText(line);
+                                final String m = line;
+
                                 handler.post(new Runnable() {
                                     @Override
                                     public void run() {
                                         // do whatever you want to the front end
                                         // this is where you can be creative
+                                        ponerTesto(m);
+
                                     }
                                 });
                             }
@@ -108,6 +144,10 @@ public class ServerActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
+    }
+
+    private void ponerTesto(String s){
+        serverStatus.setText(s);
     }
 
     // gets the ip address of your phone's network

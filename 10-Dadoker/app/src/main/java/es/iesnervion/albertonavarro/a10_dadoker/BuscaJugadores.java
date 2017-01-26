@@ -3,12 +3,16 @@ package es.iesnervion.albertonavarro.a10_dadoker;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.wifi.p2p.WifiP2pManager;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -28,8 +32,10 @@ public class BuscaJugadores extends AppCompatActivity implements View.OnClickLis
     private TextView txtInfo;
     private TextView txtLista;
     private ListView lista;
+    private ImageView imagenReloj;
     private ArrayAdapter<String> adapter;
     private ArrayList<String> direcciones = new ArrayList<>();
+    private Animation animReloj;
     private Button btnBuscar;
 
 
@@ -42,8 +48,12 @@ public class BuscaJugadores extends AppCompatActivity implements View.OnClickLis
         txtLista= (TextView) findViewById(R.id.txtLista);
         btnBuscar= (Button) findViewById(R.id.btnBuscar);
         lista= (ListView) findViewById(R.id.list);
+        imagenReloj = (ImageView) findViewById(R.id.imagenReloj);
         btnBuscar.setOnClickListener(this);
 
+
+        animReloj = AnimationUtils.loadAnimation(this, R.anim.anim_dado);
+        animReloj.setDuration(9000);
 
         mManager = (WifiP2pManager) getSystemService(this.WIFI_P2P_SERVICE);
         mChannel = mManager.initialize(this, getMainLooper(), null);
@@ -91,6 +101,17 @@ public class BuscaJugadores extends AppCompatActivity implements View.OnClickLis
         switch (view.getId()){
             case R.id.btnBuscar:
                 mReceiver.desubrirParejas();
+                btnBuscar.setEnabled(false);
+                imagenReloj.setVisibility(View.VISIBLE);
+                imagenReloj.startAnimation(animReloj);
+                Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    public void run() {
+                        btnBuscar.setEnabled(true);
+                        imagenReloj.clearAnimation();
+                        imagenReloj.setVisibility(View.INVISIBLE);
+                    }
+                }, 10000);
                 break;
         }
     }
@@ -117,7 +138,5 @@ public class BuscaJugadores extends AppCompatActivity implements View.OnClickLis
         if(mReceiver.conectarse(itemValue)){
             startActivity(new Intent(this, VsHumano.class));
         }
-
-
     }
 }

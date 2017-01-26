@@ -28,10 +28,10 @@
         <activity
             android:name=".VsIA"
             android:screenOrientation="portrait" />
-        <activity android:name=".BuscaJugadores" />
-        <activity android:name=".Tests.ServerActivity" />
-        <activity android:name=".VsHumano" />
-        <activity android:name=".Tests.ClientActivity"></activity>
+        <activity android:name=".BuscaJugadores" android:screenOrientation="portrait"/>
+        <activity android:name=".Tests.ServerActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".VsHumano" android:screenOrientation="portrait"/>
+        <activity android:name=".Tests.ClientActivity" android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

@@ -24,6 +24,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Connectarse"
-        android:id="@+id/connect_phones"/>
+        android:id="@+id/btnConectar"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtMensaje"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ENVIAR"
+        android:id="@+id/btnEnviar"/>
 
 </LinearLayout>
