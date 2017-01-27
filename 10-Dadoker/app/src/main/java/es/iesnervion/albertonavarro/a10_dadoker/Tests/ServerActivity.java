@@ -40,6 +40,7 @@ public class ServerActivity extends AppCompatActivity implements View.OnClickLis
     private Handler handler = new Handler();
 
     private ServerSocket serverSocket;
+    private Socket cliente;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +52,8 @@ public class ServerActivity extends AppCompatActivity implements View.OnClickLis
         etTesto = (EditText) findViewById(R.id.txtMensajeServer);
 
         SERVERIP = getLocalIpAddress();
+
+
 
         Thread fst = new Thread(new ServerThread());
         fst.start();
@@ -80,7 +83,7 @@ public class ServerActivity extends AppCompatActivity implements View.OnClickLis
                     serverSocket = new ServerSocket(SERVERPORT);
                     while (true) {
                         // listen for incoming clients
-                        final Socket client = serverSocket.accept();
+                        cliente = serverSocket.accept();
                         handler.post(new Runnable() {
                             @Override
                             public void run() {
@@ -89,16 +92,7 @@ public class ServerActivity extends AppCompatActivity implements View.OnClickLis
                         });
 
                         try {
-                            if(enviar && client.isConnected()) {
-                                PrintWriter out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(client.getOutputStream())), true);
-                                // where you issue the commands
-                                out.println(etTesto.getText().toString());
-                                Log.d("Servidor", "C: Enviado.");
-                                enviar = false;
-                            }
-
-
-                            BufferedReader in = new BufferedReader(new InputStreamReader(client.getInputStream()));
+                            BufferedReader in = new BufferedReader(new InputStreamReader(cliente.getInputStream()));
                             String line;
                             while ((line = in.readLine()) != null) {
                                 Log.d("ServerActivity", line);
@@ -150,7 +144,7 @@ public class ServerActivity extends AppCompatActivity implements View.OnClickLis
         serverStatus.setText(s);
     }
 
-    // gets the ip address of your phone's network
+
     private String getLocalIpAddress() {
         try {
             for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements();) {

@@ -20,14 +20,13 @@ import java.net.Socket;
 import es.iesnervion.albertonavarro.a10_dadoker.R;
 
 public class ClientActivity extends AppCompatActivity implements View.OnClickListener {
-
+    //Views
     private EditText serverIp;
     private EditText txtMensaje;
     private Button btnEnviar;
-
-    private Button connectPhones;
+    private Button btnConectar;
+    
     private String textoAEnviar;
-
     private String serverIpAddress = "";
 
     private boolean connected = false;
@@ -42,8 +41,8 @@ public class ClientActivity extends AppCompatActivity implements View.OnClickLis
         setContentView(R.layout.activity_client);
 
         serverIp = (EditText) findViewById(R.id.server_ip);
-        connectPhones = (Button) findViewById(R.id.btnConectar);
-        connectPhones.setOnClickListener(this);
+        btnConectar = (Button) findViewById(R.id.btnConectar);
+        btnConectar.setOnClickListener(this);
 
         btnEnviar = (Button) findViewById(R.id.btnEnviar);
         btnEnviar.setOnClickListener(this);
@@ -83,35 +82,38 @@ public class ClientActivity extends AppCompatActivity implements View.OnClickLis
         public void run() {
             try {
                 InetAddress serverAddr = InetAddress.getByName(serverIpAddress);
-                Log.d("ClientActivity", "C: Connecting...");
+                Log.d("Cliente", "Conectando...");
                 Socket socket = new Socket(serverAddr, ServerActivity.SERVERPORT);
+
+
                 connected = true;
                 while (connected) {
                     try {
                         if(enviarMensaje) {
-                            Log.d("ClientActivity", "C: Enviando.");
+                            Log.d("Cliente", "Enviando...");
                             PrintWriter out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
-                            // where you issue the commands
                             out.println(textoAEnviar);
-                            Log.d("ClientActivity", "C: Enviado.");
+                            Log.d("Cliente", "Enviado");
                             enviarMensaje= false;
-
-
-                            //WHADAFAC
-                            BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                            String response = in.readLine();
-                            Toast.makeText(getApplicationContext(), response, Toast.LENGTH_SHORT);
-
-
                         }
                     } catch (Exception e) {
-                        Log.e("ClientActivity", "S: Error", e);
+                        Log.e("Cliente", "Error", e);
+                    }
+
+                    try{
+                        //WHADAFAC
+                        BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                        String response = in.readLine();
+                        Toast.makeText(getApplicationContext(), response, Toast.LENGTH_SHORT).show();
+                    }catch (Exception e){
+                        Log.e("Cliente", "Error", e);
                     }
                 }
                 socket.close();
-                Log.d("ClientActivity", "C: Closed.");
+                Log.d("Cliente", "Conexión cerrada");
             } catch (Exception e) {
-                Log.e("ClientActivity", "C: Error", e);
+                Toast.makeText(getApplicationContext(), "Se ha perdido la conexión", Toast.LENGTH_SHORT).show();
+                Log.e("Cliente", "Error", e);
                 connected = false;
             }
         }
