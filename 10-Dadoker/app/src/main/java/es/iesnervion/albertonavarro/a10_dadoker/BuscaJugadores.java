@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -27,7 +28,6 @@ public class BuscaJugadores extends AppCompatActivity implements View.OnClickLis
     WifiP2pManager.Channel mChannel;
     Recibidor mReceiver;
     IntentFilter mIntentFilter;
-    WifiP2pManager.PeerListListener peerListListener;
 
     private TextView txtInfo;
     private TextView txtLista;
@@ -37,6 +37,8 @@ public class BuscaJugadores extends AppCompatActivity implements View.OnClickLis
     private ArrayList<String> direcciones = new ArrayList<>();
     private Animation animReloj;
     private Button btnBuscar;
+
+    private Handler handler;
 
 
     @Override
@@ -75,20 +77,28 @@ public class BuscaJugadores extends AppCompatActivity implements View.OnClickLis
 
         lista.setOnItemClickListener(this);
 
-
+        //region **Handler
+        //Maneja los mensajes recibidos
+        handler = new Handler(){
+            @Override
+            public void handleMessage(Message msg) {
+                //Tratamiento de datos recibidos
+            }
+        };
+        //endregion
     }
 
     public void setTexto(String s){
         txtInfo.setText(s);
     }
 
-    /* register the broadcast receiver with the intent values to be matched */
+
     @Override
     protected void onResume() {
         super.onResume();
         registerReceiver(mReceiver, mIntentFilter);
     }
-    /* unregister the broadcast receiver */
+
     @Override
     protected void onPause() {
         super.onPause();
@@ -102,6 +112,7 @@ public class BuscaJugadores extends AppCompatActivity implements View.OnClickLis
             case R.id.btnBuscar:
                 mReceiver.desubrirParejas();
                 btnBuscar.setEnabled(false);
+                //region Animación del reloj
                 imagenReloj.setVisibility(View.VISIBLE);
                 imagenReloj.startAnimation(animReloj);
                 Handler handler = new Handler();
@@ -112,6 +123,7 @@ public class BuscaJugadores extends AppCompatActivity implements View.OnClickLis
                         imagenReloj.setVisibility(View.INVISIBLE);
                     }
                 }, 10000);
+                //endregion
                 break;
         }
     }
@@ -126,7 +138,6 @@ public class BuscaJugadores extends AppCompatActivity implements View.OnClickLis
         /*String s = "Lista de dispositivos conectados:\n";
         for(String nombre: lista)
             s += nombre+"\n";
-
         txtLista.setText(s);*/
     }
 
@@ -136,7 +147,11 @@ public class BuscaJugadores extends AppCompatActivity implements View.OnClickLis
 
         String itemValue = (String) lista.getItemAtPosition(position);
         if(mReceiver.conectarse(itemValue)){
-            startActivity(new Intent(this, VsHumano.class));
+            //Ejecutar codigo
+
+
+
+            //startActivity(new Intent(this, VsHumano.class));
         }
     }
 }
