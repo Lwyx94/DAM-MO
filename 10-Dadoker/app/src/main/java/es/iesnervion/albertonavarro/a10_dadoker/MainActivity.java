@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.btnHumano:
-                startActivity(new Intent(this, BuscaJugadores.class));
+                startActivity(new Intent(this, VsHumanoLocal.class));
                 break;
             case R.id.btnIA:
                 startActivity(new Intent(this, VsIA.class));

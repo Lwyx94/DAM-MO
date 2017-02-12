@@ -5,9 +5,8 @@
     android:id="@+id/activity_vs_ia"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="es.iesnervion.albertonavarro.a10_dadoker.VsIA"
-    android:orientation="vertical">
-
+    android:orientation="vertical"
+    tools:context="es.iesnervion.albertonavarro.a10_dadoker.VsIA">
 
 
     <LinearLayout
@@ -15,267 +14,297 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:id="@+id/tableroIA"
-        android:layout_weight="2"
-        android:background="#FF5555">
-
-        <es.iesnervion.albertonavarro.a10_dadoker.Models.Dado
-            android:layout_gravity="top"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:id="@+id/tableroIA"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/dado1"
-            android:textSize="40sp"
-            android:layout_margin="10dp"
-            android:layout_weight="1"
-            android:id="@+id/dadoIA1"/>
+            android:layout_weight="2"
+            android:background="#FF5555"
+            android:gravity="top"
+            android:orientation="vertical">
 
-        <es.iesnervion.albertonavarro.a10_dadoker.Models.Dado
-            android:layout_gravity="top"
-            android:layout_width="0dp"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <es.iesnervion.albertonavarro.a10_dadoker.Models.Dado
+                    android:id="@+id/dadoIA1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top"
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/dado1"
+                    android:textSize="40sp" />
+
+                <es.iesnervion.albertonavarro.a10_dadoker.Models.Dado
+                    android:id="@+id/dadoIA2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top"
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/dado2"
+                    android:textSize="40sp" />
+
+                <es.iesnervion.albertonavarro.a10_dadoker.Models.Dado
+                    android:id="@+id/dadoIA3"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top"
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+
+                    android:src="@drawable/dado3"
+                    android:textSize="40sp" />
+
+                <es.iesnervion.albertonavarro.a10_dadoker.Models.Dado
+                    android:id="@+id/dadoIA4"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top"
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+
+                    android:src="@drawable/dado4"
+                    android:textSize="40sp" />
+
+                <es.iesnervion.albertonavarro.a10_dadoker.Models.Dado
+                    android:id="@+id/dadoIA5"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top"
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+
+                    android:src="@drawable/dado5"
+                    android:textSize="40sp" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btnTirarAdversario"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="Tirar"
+                android:rotation="180"
+                android:visibility="gone"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/corasonesIA"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/corIA1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:src="@drawable/corasonrojo"
+                android:textColor="@android:color/black"
+                android:textSize="40sp" />
+
+            <ImageView
+                android:id="@+id/corIA2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:src="@drawable/corasonrojo" />
+
+            <ImageView
+                android:id="@+id/corIA3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:src="@drawable/corasonrojo" />
+
+            <ImageView
+                android:id="@+id/corIA4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:src="@drawable/corasonrojo"
+                android:textColor="@android:color/black" />
+
+            <ImageView
+                android:id="@+id/corIA5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:src="@drawable/corasonrojo"
+                android:textColor="@android:color/black" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayout4"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/dado2"
-            android:textSize="40sp"
-            android:layout_margin="10dp"
-            android:layout_weight="1"
-            android:id="@+id/dadoIA2"/>
+            android:orientation="vertical">
 
-        <es.iesnervion.albertonavarro.a10_dadoker.Models.Dado
-            android:layout_gravity="top"
-            android:layout_width="0dp"
+            <TextView
+                android:id="@+id/txtResIA"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textSize="30sp" />
+
+            <Button
+                android:id="@+id/btnRoll"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/roll"
+                android:textSize="30sp" />
+
+            <TextView
+                android:id="@+id/txtResHum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textSize="30sp" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/corasonesH"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/cor1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:src="@drawable/corasonrojo"
+                android:textColor="@android:color/black"
+                android:textSize="40sp" />
+
+            <ImageView
+                android:id="@+id/cor2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:src="@drawable/corasonrojo" />
+
+            <ImageView
+                android:id="@+id/cor3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:src="@drawable/corasonrojo" />
+
+            <ImageView
+                android:id="@+id/cor4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:src="@drawable/corasonrojo"
+                android:textColor="@android:color/black" />
+
+            <ImageView
+                android:id="@+id/cor5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:src="@drawable/corasonrojo"
+                android:textColor="@android:color/black" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/tableroH"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/dado3"
-            android:textSize="40sp"
-            android:layout_margin="10dp"
+            android:layout_weight="2"
+            android:background="#55FF55"
+            android:gravity="bottom"
+            android:orientation="vertical">
 
-            android:layout_weight="1"
-            android:id="@+id/dadoIA3"/>
+            <Button
+                android:id="@+id/btnTirarUsuario"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="Tirar"
+                android:visibility="gone"/>
 
-        <es.iesnervion.albertonavarro.a10_dadoker.Models.Dado
-            android:layout_gravity="top"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:src="@drawable/dado4"
-            android:textSize="40sp"
-            android:layout_margin="10dp"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-            android:layout_weight="1"
-            android:id="@+id/dadoIA4"/>
+                <es.iesnervion.albertonavarro.a10_dadoker.Models.Dado
+                    android:id="@+id/dado1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/dado1"
+                    android:textColor="@android:color/black"
+                    android:textSize="40sp" />
 
-        <es.iesnervion.albertonavarro.a10_dadoker.Models.Dado
-            android:layout_gravity="top"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:src="@drawable/dado5"
-            android:textSize="40sp"
-            android:layout_margin="10dp"
+                <es.iesnervion.albertonavarro.a10_dadoker.Models.Dado
+                    android:id="@+id/dado2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/dado1"
 
-            android:layout_weight="1"
-            android:id="@+id/dadoIA5"/>
+                    android:textColor="@android:color/black"
+                    android:textSize="40sp" />
+
+                <es.iesnervion.albertonavarro.a10_dadoker.Models.Dado
+                    android:id="@+id/dado3"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/dado1"
+
+                    android:textColor="@android:color/black"
+                    android:textSize="40sp" />
+
+                <es.iesnervion.albertonavarro.a10_dadoker.Models.Dado
+                    android:id="@+id/dado4"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/dado1"
+
+                    android:textColor="@android:color/black"
+                    android:textSize="40sp" />
+
+                <es.iesnervion.albertonavarro.a10_dadoker.Models.Dado
+                    android:id="@+id/dado5"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/dado1"
+
+                    android:textColor="@android:color/black"
+                    android:textSize="40sp" />
+            </LinearLayout>
+        </LinearLayout>
     </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/corasonesIA">
-
-        <ImageView
-            android:textColor="@android:color/black"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/corasonrojo"
-            android:textSize="40sp"
-            android:layout_margin="10dp"
-            android:id="@+id/corIA1"/>
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/corasonrojo"
-            android:layout_margin="10dp"
-            android:id="@+id/corIA2"/>
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/corasonrojo"
-            android:layout_margin="10dp"
-            android:id="@+id/corIA3"/>
-        <ImageView
-            android:textColor="@android:color/black"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/corasonrojo"
-            android:layout_margin="10dp"
-            android:id="@+id/corIA4"/>
-        <ImageView
-            android:textColor="@android:color/black"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/corasonrojo"
-            android:layout_margin="10dp"
-            android:id="@+id/corIA5"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:id="@+id/linearLayout4">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:textSize="30sp"
-            android:id="@+id/txtResIA"/>
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/roll"
-            android:textSize="30sp"
-            android:id="@+id/btnRoll"
-            />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:textSize="30sp"
-            android:id="@+id/txtResHum"/>
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/corasonesH">
-
-        <ImageView
-            android:textColor="@android:color/black"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/corasonrojo"
-            android:textSize="40sp"
-            android:layout_margin="10dp"
-            android:id="@+id/cor1"/>
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/corasonrojo"
-            android:layout_margin="10dp"
-            android:id="@+id/cor2"/>
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/corasonrojo"
-            android:layout_margin="10dp"
-            android:id="@+id/cor3"/>
-        <ImageView
-            android:textColor="@android:color/black"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/corasonrojo"
-            android:layout_margin="10dp"
-            android:id="@+id/cor4"/>
-        <ImageView
-            android:textColor="@android:color/black"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/corasonrojo"
-            android:layout_margin="10dp"
-            android:id="@+id/cor5"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/tableroH"
-        android:gravity="center"
-        android:layout_weight="2"
-        android:background="#55FF55">
-
-        <es.iesnervion.albertonavarro.a10_dadoker.Models.Dado
-            android:layout_gravity="bottom"
-            android:textColor="@android:color/black"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:src="@drawable/dado1"
-            android:textSize="40sp"
-            android:layout_margin="10dp"
-            android:layout_weight="1"
-            android:id="@+id/dado1"/>
-
-        <es.iesnervion.albertonavarro.a10_dadoker.Models.Dado
-            android:layout_gravity="bottom"
-            android:textColor="@android:color/black"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:src="@drawable/dado1"
-            android:textSize="40sp"
-            android:layout_margin="10dp"
-
-            android:layout_weight="1"
-            android:id="@+id/dado2"/>
-
-        <es.iesnervion.albertonavarro.a10_dadoker.Models.Dado
-            android:layout_gravity="bottom"
-            android:textColor="@android:color/black"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:src="@drawable/dado1"
-            android:textSize="40sp"
-            android:layout_margin="10dp"
-
-            android:layout_weight="1"
-            android:id="@+id/dado3"/>
-
-        <es.iesnervion.albertonavarro.a10_dadoker.Models.Dado
-            android:layout_gravity="bottom"
-            android:textColor="@android:color/black"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:src="@drawable/dado1"
-            android:textSize="40sp"
-            android:layout_margin="10dp"
-
-            android:layout_weight="1"
-            android:id="@+id/dado4"/>
-
-        <es.iesnervion.albertonavarro.a10_dadoker.Models.Dado
-            android:layout_gravity="bottom"
-            android:textColor="@android:color/black"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:src="@drawable/dado1"
-            android:textSize="40sp"
-            android:layout_margin="10dp"
-
-            android:layout_weight="1"
-            android:id="@+id/dado5"/>
-    </LinearLayout>
-    </LinearLayout>
-    <!--<ImageView
-        android:id="@+id/bannerIA"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:src="@drawable/win"
-        android:scaleType="fitXY"
-        android:layout_marginRight="-100dp"
-        android:layout_alignParentRight="true"/>-->
 
     <TextView
         android:id="@+id/txtResultado"
-        android:text="JUAS"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="90dp"
-
+        android:layout_alignParentRight="true"
         android:layout_marginRight="-100dp"
-        android:layout_alignParentRight="true"/>
+
+        android:layout_marginTop="90dp"
+        android:text="JUAS" />
 
 </RelativeLayout>

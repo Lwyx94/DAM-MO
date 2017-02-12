@@ -4,11 +4,13 @@ import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.media.SoundPool;
 import android.os.Build;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -25,28 +27,29 @@ import java.util.Random;
 import es.iesnervion.albertonavarro.a10_dadoker.Models.Dado;
 
 public class VsIA extends AppCompatActivity implements View.OnClickListener{
-    private Button btnRoll;
-    private Dado dado1, dado2, dado3, dado4, dado5;
-    private TextView txtResHum, txtResIA;
-    private Dado dadoIA1, dadoIA2, dadoIA3, dadoIA4, dadoIA5;
-    private Dado[] dados = new Dado[5];
-    private Dado[] dadosIA = new Dado[5];
-    private ImageView cor1,cor2,cor3,cor4,cor5;
-    private ImageView corIA1,corIA2,corIA3,corIA4,corIA5;
+    public Button btnRoll;
+    public Dado dado1, dado2, dado3, dado4, dado5;
+    public TextView txtResHum, txtResIA;
+    public Dado dadoIA1, dadoIA2, dadoIA3, dadoIA4, dadoIA5;
+    public Dado[] dados = new Dado[5];
+    public Dado[] dadosIA = new Dado[5];
+    public ImageView cor1,cor2,cor3,cor4,cor5;
+    public ImageView corIA1,corIA2,corIA3,corIA4,corIA5;
     //private ImageView bannerIA;
-    private TextView txtGanIA;
-    private ImageView[] corasonesH = new ImageView[5];
-    private ImageView[] corasonesIA = new ImageView[5];
-    private LinearLayout tableroIA, tableroH;
-    private Random ale = new Random();
-    private int vidaH = 5;
-    private int vidaIA = 5;
-    private boolean primeraTirada = true, tirando = false;
-    private Animation animDado;
-    private Animation animBanner;
-    private SoundPool soundPool;
-    private  int idSoundRoll, idMusicVictory, idMusicLose;
-    private int colorSel = Color.LTGRAY;
+    public TextView txtGanIA;
+    public ImageView[] corasonesH = new ImageView[5];
+    public ImageView[] corasonesIA = new ImageView[5];
+    public LinearLayout tableroIA, tableroH;
+    public Random ale = new Random();
+    public int vidaH = 5;
+    public int vidaIA = 5;
+    public boolean primeraTirada = true, tirando = false;
+    public Animation animDado;
+    public Animation animBanner;
+    public SoundPool soundPool;
+    public MediaPlayer mediaPlayer;
+    public int idMusicBackground, idSoundRoll, idMusicVictory, idMusicLose;
+    public int colorSel = Color.LTGRAY;
 
 
     @Override
@@ -97,6 +100,11 @@ public class VsIA extends AppCompatActivity implements View.OnClickListener{
         idSoundRoll = soundPool.load(this, R.raw.roll, 1);
         idMusicLose = soundPool.load(this, R.raw.lose, 1);
         idMusicVictory = soundPool.load(this, R.raw.victory, 1);
+
+        mediaPlayer = MediaPlayer.create(this, R.raw.background);
+        mediaPlayer.setLooping(true);
+        mediaPlayer.start();
+
 
         //Dados del usaurio
         dado1 = (Dado) findViewById(R.id.dado1);
@@ -153,10 +161,12 @@ public class VsIA extends AppCompatActivity implements View.OnClickListener{
 
         //Banners
         txtGanIA = (TextView) findViewById(R.id.txtResultado);
+
     }
 
-    private void finalizarRonda() {
+    public void finalizarRonda() {
         if(vidaH==0 || vidaIA==0){
+            mediaPlayer.stop();
             String titulo = (vidaH==0)?"¡DERROTA!": "¡VICTORIA!";
             String mensaje = (vidaH==0)?"¡Has perdido!": "¡Has ganado!";
             if(vidaH==0)
@@ -177,6 +187,7 @@ public class VsIA extends AppCompatActivity implements View.OnClickListener{
         }else {
             btnRoll.setText("TIRAR");
             btnRoll.setTextColor(Color.GREEN);
+            btnRoll.setEnabled(true);
             primeraTirada = !primeraTirada;
             tirando = false;
         }
@@ -234,8 +245,9 @@ public class VsIA extends AppCompatActivity implements View.OnClickListener{
         }
     }
 
-    private void tirarDados() {
+    public void tirarDados() {
         tirando=true;
+        btnRoll.setEnabled(false);
         btnRoll.setText("TIRANDO");
 
         soundPool.stop(idSoundRoll);
@@ -270,7 +282,7 @@ public class VsIA extends AppCompatActivity implements View.OnClickListener{
 
     }
 
-    private void actualizarVida() {
+    public void actualizarVida() {
         int cont = 0;
         for(ImageView cor: corasonesH){
             if(cont < vidaH)
@@ -292,7 +304,7 @@ public class VsIA extends AppCompatActivity implements View.OnClickListener{
 
     }
 
-    private void actualizarValores(){
+    public void actualizarValores(){
         for(Dado dado : dados){
             switch (dado.getValor()){
                 case 7:
@@ -340,7 +352,7 @@ public class VsIA extends AppCompatActivity implements View.OnClickListener{
         }
     }
 
-    private void mostrarResultado() {
+    public void mostrarResultado() {
         animBanner = AnimationUtils.loadAnimation(this, R.anim.anim_banner);
 
         int[] manoH = obtenerMano(dados);
@@ -592,7 +604,7 @@ public class VsIA extends AppCompatActivity implements View.OnClickListener{
      *         7-Poker
      *         8-RePoker
      */
-    private void movimientoIA(){
+    public void movimientoIA(){
         int[] mano = obtenerMano(dadosIA);
         switch (mano[0]){
             case 0:
@@ -617,4 +629,11 @@ public class VsIA extends AppCompatActivity implements View.OnClickListener{
                 break;
         }
     }
+
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+        mediaPlayer.stop();
+    }
+
 }
