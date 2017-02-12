@@ -41,8 +41,8 @@ public class VsIA extends AppCompatActivity implements View.OnClickListener{
     public ImageView[] corasonesIA = new ImageView[5];
     public LinearLayout tableroIA, tableroH;
     public Random ale = new Random();
-    public int vidaH = 1;
-    public int vidaIA = 1;
+    public int vidaH = 5;
+    public int vidaIA = 5;
     public boolean primeraTirada = true, tirando = false;
     public Animation animDado;
     public Animation animBanner;
@@ -70,6 +70,8 @@ public class VsIA extends AppCompatActivity implements View.OnClickListener{
         animDado.setAnimationListener(new Animation.AnimationListener(){
             @Override
             public void onAnimationStart(Animation arg0) {
+                soundPool.stop(idSoundRoll);
+                soundPool.play(idSoundRoll, 1, 1, 1, 0, 1);
             }
             @Override
             public void onAnimationRepeat(Animation arg0) {
@@ -244,8 +246,8 @@ public class VsIA extends AppCompatActivity implements View.OnClickListener{
         btnRoll.setEnabled(false);
         btnRoll.setText("TIRANDO");
 
-        soundPool.stop(idSoundRoll);
-        soundPool.play(idSoundRoll, 1, 1, 1, 0, 1);
+        /*soundPool.stop(idSoundRoll);
+        soundPool.play(idSoundRoll, 1, 1, 1, 0, 1);*/
 
         btnRoll.setTextColor(Color.GRAY);
 
@@ -363,7 +365,7 @@ public class VsIA extends AppCompatActivity implements View.OnClickListener{
         String res = "resultado";
         switch (humanoGanador(manoH, manoIA)) {
             case 1:
-                res="¡HAS GANADO!";
+                //res="¡HAS GANADO!";
                 if(!primeraTirada) {
                     tableroH.setBackgroundColor(Color.GREEN);
                     tableroIA.setBackgroundColor(Color.RED);
@@ -371,7 +373,7 @@ public class VsIA extends AppCompatActivity implements View.OnClickListener{
                 }
                 break;
             case 2:
-                res="¡HAS PERDIDO! ¡JUAS!";
+                //res="¡HAS PERDIDO! ¡JUAS!";
                 if(!primeraTirada) {
                     tableroH.setBackgroundColor(Color.RED);
                     tableroIA.setBackgroundColor(Color.GREEN);
