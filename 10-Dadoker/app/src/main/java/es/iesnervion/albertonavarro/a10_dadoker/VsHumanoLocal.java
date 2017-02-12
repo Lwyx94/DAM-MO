@@ -1,7 +1,6 @@
 package es.iesnervion.albertonavarro.a10_dadoker;
 
 import android.content.DialogInterface;
-import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
@@ -36,64 +35,66 @@ public class VsHumanoLocal extends VsIA {
         corIA4.setScaleY(-1);
         corIA5.setScaleY(-1);
         txtResIA.setRotation(180);
+
+
     }
 
     @Override
     public void onClick(View view) {
         super.onClick(view);
-        switch (view.getId()){
+        switch (view.getId()) {
             //DADOS ADVERSARIO
             case R.id.dadoIA1:
-                if(!primeraTirada) {
-                    if (dadoIA1.getColorFilter()==null)
+                if (!primeraTirada) {
+                    if (dadoIA1.getColorFilter() == null)
                         dadoIA1.setColorFilter(colorSel, PorterDuff.Mode.MULTIPLY);
                     else
                         dadoIA1.clearColorFilter();
                 }
                 break;
             case R.id.dadoIA2:
-                if(!primeraTirada) {
-                    if (dadoIA2.getColorFilter()==null)
+                if (!primeraTirada) {
+                    if (dadoIA2.getColorFilter() == null)
                         dadoIA2.setColorFilter(colorSel, PorterDuff.Mode.MULTIPLY);
                     else
                         dadoIA2.clearColorFilter();
                 }
                 break;
             case R.id.dadoIA3:
-                if(!primeraTirada) {
-                    if (dadoIA3.getColorFilter()==null)
+                if (!primeraTirada) {
+                    if (dadoIA3.getColorFilter() == null)
                         dadoIA3.setColorFilter(colorSel, PorterDuff.Mode.MULTIPLY);
                     else
                         dadoIA3.clearColorFilter();
                 }
                 break;
             case R.id.dadoIA4:
-                if(!primeraTirada) {
-                    if (dadoIA4.getColorFilter()==null)
+                if (!primeraTirada) {
+                    if (dadoIA4.getColorFilter() == null)
                         dadoIA4.setColorFilter(colorSel, PorterDuff.Mode.MULTIPLY);
                     else
                         dadoIA4.clearColorFilter();
                 }
                 break;
             case R.id.dadoIA5:
-                if(!primeraTirada) {
-                    if (dadoIA5.getColorFilter()==null)
+                if (!primeraTirada) {
+                    if (dadoIA5.getColorFilter() == null)
                         dadoIA5.setColorFilter(colorSel, PorterDuff.Mode.MULTIPLY);
                     else
                         dadoIA5.clearColorFilter();
                 }
                 break;
             case R.id.btnTirarAdversario:
-                if(!tirando) {
+                if (!tirando) {
                     btnTirarAdversario.setEnabled(false);
-                    if(!btnTirarUsuario.isEnabled())
+                    if (!btnTirarUsuario.isEnabled())
                         tirarDados();
                 }
                 break;
             case R.id.btnTirarUsuario:
-                if(!tirando) {
+                if (!tirando) {
                     btnTirarUsuario.setEnabled(false);
-                    if(!btnTirarAdversario.isEnabled())
+                    if (!btnTirarAdversario.isEnabled())
                         tirarDados();
                 }
                 break;
@@ -102,24 +103,13 @@ public class VsHumanoLocal extends VsIA {
 
 
     @Override
-    public void movimientoIA(){
-
-    }
-
-    @Override
-    public void tirarDados(){
-        super.tirarDados();
-        btnTirarAdversario.setEnabled(true);
-        btnTirarUsuario.setEnabled(true);
-    }
-
-    @Override
     public void finalizarRonda() {
-        if(vidaH==0 || vidaIA==0){
+        if (vidaH == 0 || vidaIA == 0) {
+            mediaPlayer.stop();
             String titulo = "¡SACABÓ!";
-            String mensaje = (vidaH==0)?"¡Ha ganado el jugador invertido!": "¡Ha ganado el jugador normal!";
+            String mensaje = (vidaH == 0) ? "¡Ha ganado el jugador invertido!" : "¡Ha ganado el jugador normal!";
             soundPool.play(idMusicLose, 1, 1, 1, 0, 1);
-            soundPool.play(idMusicVictory,0.5f, 0.5f, 1, 0, 1);
+            soundPool.play(idMusicVictory, 0.5f, 0.5f, 1, 0, 1);
 
             new AlertDialog.Builder(this)
                     .setTitle(titulo)
@@ -129,12 +119,22 @@ public class VsHumanoLocal extends VsIA {
                             finish();
                         }
                     })
+                    .setCancelable(false)
                     .show();
-        }else {
-            btnRoll.setText("TIRAR");
-            btnRoll.setTextColor(Color.GREEN);
+        } else {
             primeraTirada = !primeraTirada;
             tirando = false;
+            btnTirarAdversario.setEnabled(true);
+            btnTirarUsuario.setEnabled(true);
         }
+    }
+
+
+    @Override
+    public void enAnimacionFinal() {
+        actualizarValores();
+        mostrarResultado();
+        actualizarVida();
+        finalizarRonda();
     }
 }

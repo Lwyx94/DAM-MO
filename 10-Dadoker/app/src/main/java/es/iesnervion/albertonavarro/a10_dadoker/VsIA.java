@@ -41,8 +41,8 @@ public class VsIA extends AppCompatActivity implements View.OnClickListener{
     public ImageView[] corasonesIA = new ImageView[5];
     public LinearLayout tableroIA, tableroH;
     public Random ale = new Random();
-    public int vidaH = 5;
-    public int vidaIA = 5;
+    public int vidaH = 1;
+    public int vidaIA = 1;
     public boolean primeraTirada = true, tirando = false;
     public Animation animDado;
     public Animation animBanner;
@@ -76,15 +76,7 @@ public class VsIA extends AppCompatActivity implements View.OnClickListener{
             }
             @Override
             public void onAnimationEnd(Animation arg0) {
-                actualizarValores();
-
-                mostrarResultado();
-                actualizarVida();
-
-                if(primeraTirada)
-                    movimientoIA();
-
-                finalizarRonda();
+               enAnimacionFinal();
             }
         });
 
@@ -183,6 +175,7 @@ public class VsIA extends AppCompatActivity implements View.OnClickListener{
                             finish();
                         }
                     })
+                    .setCancelable(false)
                     .show();
         }else {
             btnRoll.setText("TIRAR");
@@ -198,9 +191,8 @@ public class VsIA extends AppCompatActivity implements View.OnClickListener{
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.btnRoll:
-                if(!tirando) {
+                //if(!tirando)
                     tirarDados();
-                }
                 break;
             case R.id.dado1:
                 if(!primeraTirada) {
@@ -246,6 +238,8 @@ public class VsIA extends AppCompatActivity implements View.OnClickListener{
     }
 
     public void tirarDados() {
+        boolean noMovimientos = true;
+
         tirando=true;
         btnRoll.setEnabled(false);
         btnRoll.setText("TIRANDO");
@@ -263,6 +257,7 @@ public class VsIA extends AppCompatActivity implements View.OnClickListener{
         //Usuario
        for (Dado dado : dados) {
            if (primeraTirada || dado.getColorFilter() != null) {
+               noMovimientos  = false;
                dado.startAnimation(animDado);
                dado.setValor(ale.nextInt(6) + 2);
                dado.clearColorFilter();
@@ -273,11 +268,15 @@ public class VsIA extends AppCompatActivity implements View.OnClickListener{
         //IA
         for(Dado dado: dadosIA) {
             if (primeraTirada || dado.getColorFilter() != null) {
+                noMovimientos  = false;
                 dado.startAnimation(animDado);
                 dado.setValor(ale.nextInt(6) + 2);
                 dado.clearColorFilter();
             }
         }
+
+        if(noMovimientos)
+            enAnimacionFinal();
 
 
     }
@@ -385,10 +384,9 @@ public class VsIA extends AppCompatActivity implements View.OnClickListener{
         }
         if(!primeraTirada) {
             txtGanIA.setText(res);
-            txtGanIA.startAnimation(animBanner);
+            //txtGanIA.startAnimation(animBanner);
         }
-       /* if(!primeraTirada)
-            Toast.makeText(this, res, Toast.LENGTH_LONG).show();*/
+
     }
 
     private String obtenerResultado(int[] mano) {
@@ -636,4 +634,39 @@ public class VsIA extends AppCompatActivity implements View.OnClickListener{
         mediaPlayer.stop();
     }
 
+    @Override
+    public void onStop(){
+        super.onStop();
+        mediaPlayer.stop();
+    }
+
+    @Override
+    public void onPause(){
+        super.onPause();
+        mediaPlayer.pause();
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        mediaPlayer.start();
+    }
+
+    @Override
+    public void onRestart(){
+        super.onRestart();
+        mediaPlayer.start();
+    }
+
+    public void enAnimacionFinal(){
+        actualizarValores();
+
+        mostrarResultado();
+        actualizarVida();
+
+        if(primeraTirada)
+            movimientoIA();
+
+        finalizarRonda();
+    }
 }
