@@ -38,3 +38,5 @@ captures/
 
 # Keystore files
 *.jks
+
+10-Dadoker/\.idea/ 
