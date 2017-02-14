@@ -381,7 +381,7 @@ public class VsIA extends AppCompatActivity implements View.OnClickListener{
                 }
                 break;
             case 3:
-                res="¡EMPATE! ¡AW YEAH!";
+                //res="¡EMPATE! ¡AW YEAH!";
                 break;
         }
         if(!primeraTirada) {

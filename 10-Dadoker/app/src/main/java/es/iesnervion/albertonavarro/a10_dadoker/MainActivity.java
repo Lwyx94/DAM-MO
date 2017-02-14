@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(new Intent(this, VsIA.class));
                 break;
             case R.id.btnTestServidor:
-                startActivity(new Intent(this, ServerActivity.class));
+                startActivity(new Intent(this, BuscaJugadores.class));
                 break;
             case R.id.btnTestCliente:
                 startActivity(new Intent(this, ClientActivity.class));

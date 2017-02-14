@@ -1,5 +1,9 @@
 package es.iesnervion.albertonavarro.a10_dadoker;
 
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.wifi.p2p.WifiP2pManager;
@@ -20,98 +24,74 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import es.iesnervion.albertonavarro.a10_dadoker.Tests.ServerActivity;
+import es.iesnervion.albertonavarro.a10_dadoker.Utiles.BluetoothManager;
 import es.iesnervion.albertonavarro.a10_dadoker.Utiles.Recibidor;
 
 public class BuscaJugadores extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
-
-    WifiP2pManager mManager;
-    WifiP2pManager.Channel mChannel;
-    Recibidor mReceiver;
-    IntentFilter mIntentFilter;
-
     private TextView txtInfo;
     private TextView txtLista;
     private ListView lista;
     private ImageView imagenReloj;
     private ArrayAdapter<String> adapter;
-    private ArrayList<String> direcciones = new ArrayList<>();
+    private ArrayList<String> dispositivos = new ArrayList<>();
     private Animation animReloj;
     private Button btnBuscar;
 
-    private Handler handler;
-
+    private BluetoothManager btManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_busca_jugadores);
-
-        txtInfo= (TextView) findViewById(R.id.txtInformacion);
-        txtLista= (TextView) findViewById(R.id.txtLista);
-        btnBuscar= (Button) findViewById(R.id.btnBuscar);
-        lista= (ListView) findViewById(R.id.list);
+        //region Inicialización de cosas
+        txtInfo = (TextView) findViewById(R.id.txtInformacion);
+        txtLista = (TextView) findViewById(R.id.txtLista);
+        btnBuscar = (Button) findViewById(R.id.btnBuscar);
+        lista = (ListView) findViewById(R.id.list);
         imagenReloj = (ImageView) findViewById(R.id.imagenReloj);
         btnBuscar.setOnClickListener(this);
-
-
+        //endregion
+        //region Animación del reloj
         animReloj = AnimationUtils.loadAnimation(this, R.anim.anim_dado);
         animReloj.setDuration(9000);
 
-        mManager = (WifiP2pManager) getSystemService(this.WIFI_P2P_SERVICE);
-        mChannel = mManager.initialize(this, getMainLooper(), null);
-        mReceiver = new Recibidor(mManager, mChannel, this);
-
-        mIntentFilter = new IntentFilter();
-        mIntentFilter.addAction(WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION);
-        mIntentFilter.addAction(WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION);
-        mIntentFilter.addAction(WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION);
-        mIntentFilter.addAction(WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION);
-
-
-        //Lista
         adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1, android.R.id.text1, direcciones);
-
+                android.R.layout.simple_list_item_1, android.R.id.text1, dispositivos);
+        //endregion
+        //region Lista
         lista.setAdapter(adapter);
         new Intent(this, ServerActivity.class);
-
         lista.setOnItemClickListener(this);
-
-        //region **Handler
-        //Maneja los mensajes recibidos
-        handler = new Handler(){
-            @Override
-            public void handleMessage(Message msg) {
-                //Tratamiento de datos recibidos
-            }
-        };
         //endregion
+
+        btManager = new BluetoothManager();
+
+        //IntentFilters
+        // Register for broadcasts cuando se descubre un nuevo dispositivo
+        IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
+        registerReceiver(mReceiver, filter);
+
+        // Register for broadcasts cuando comienza la búsqueda de bluetooth
+        filter = new IntentFilter(BluetoothAdapter.ACTION_DISCOVERY_STARTED);
+        registerReceiver(mReceiver, filter);
+
+        // Register for broadcasts cuando finaliza la búsqueda de bluetooth
+        filter = new IntentFilter(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
+        registerReceiver(mReceiver, filter);
+
     }
 
-    public void setTexto(String s){
+    public void setTexto(String s) {
         txtInfo.setText(s);
     }
 
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        registerReceiver(mReceiver, mIntentFilter);
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        unregisterReceiver(mReceiver);
-    }
-
-
-    @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.btnBuscar:
-                mReceiver.desubrirParejas();
-                btnBuscar.setEnabled(false);
+                btManager.searchDevices();
+
                 //region Animación del reloj
                 imagenReloj.setVisibility(View.VISIBLE);
                 imagenReloj.startAnimation(animReloj);
@@ -129,29 +109,49 @@ public class BuscaJugadores extends AppCompatActivity implements View.OnClickLis
     }
 
     public void actualizarLista(ArrayList<String> alLista) {
-        direcciones.clear();
-        direcciones.addAll(alLista);
+        dispositivos.clear();
+        dispositivos.addAll(alLista);
         //adapter.notifyDataSetChanged();
-        adapter = new ArrayAdapter<>(this,android.R.layout.simple_list_item_1, android.R.id.text1, direcciones);
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, android.R.id.text1, dispositivos);
         lista.setAdapter(adapter);
+    }
 
-        /*String s = "Lista de dispositivos conectados:\n";
-        for(String nombre: lista)
-            s += nombre+"\n";
-        txtLista.setText(s);*/
+    public void agregarDispositivo(String s) {
+        dispositivos.add(s);
+        //adapter.notifyDataSetChanged();
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, android.R.id.text1, dispositivos);
+        lista.setAdapter(adapter);
     }
 
 
     @Override
-    public void onItemClick(AdapterView<?> parent, View view,int position, long id) {
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
         String itemValue = (String) lista.getItemAtPosition(position);
-        if(mReceiver.conectarse(itemValue)){
-            //Ejecutar codigo
-
-
-
-            //startActivity(new Intent(this, VsHumano.class));
-        }
+        //startActivity(new Intent(this, VsHumano.class));
     }
+
+    //Recibidor
+    private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
+        //Se mete cuando ocurre un evento de búsqueda
+        public void onReceive(Context context, Intent intent) {
+
+            String action = intent.getAction();
+
+            if(BluetoothAdapter.ACTION_DISCOVERY_STARTED.equals(action)) {
+                //Buscando dispositivos
+
+            }
+            if (BluetoothDevice.ACTION_FOUND.equals(action)) {
+                //Dispositivo encontrado
+                BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                agregarDispositivo(device.getName());
+            } else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
+                //Búsqueda finalizada
+
+            }
+
+        }
+    };
+
 }
