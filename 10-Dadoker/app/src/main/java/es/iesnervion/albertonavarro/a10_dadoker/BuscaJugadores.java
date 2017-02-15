@@ -1,5 +1,6 @@
 package es.iesnervion.albertonavarro.a10_dadoker;
 
+import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
@@ -9,6 +10,7 @@ import android.content.IntentFilter;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -83,6 +85,9 @@ public class BuscaJugadores extends AppCompatActivity implements View.OnClickLis
         filter = new IntentFilter(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
         registerReceiver(mReceiver, filter);
 
+
+        setTexto(android.provider.Settings.Secure.getString(getContentResolver(), "bluetooth_address"));
+
     }
 
     public void setTexto(String s) {
@@ -94,6 +99,10 @@ public class BuscaJugadores extends AppCompatActivity implements View.OnClickLis
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btnBuscar:
+                int MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION = 1;
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
+                        MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION);
                 btManager.searchDevices();
 
                 //region Animación del reloj
@@ -154,16 +163,19 @@ public class BuscaJugadores extends AppCompatActivity implements View.OnClickLis
 
             if(BluetoothAdapter.ACTION_DISCOVERY_STARTED.equals(action)) {
                 //Buscando dispositivos
+                Log.d("HEY","Buscando.");
                 btnBuscar.setEnabled(false);
                 imagenReloj.setVisibility(View.VISIBLE);
                 imagenReloj.startAnimation(animReloj);
             }
             if (BluetoothDevice.ACTION_FOUND.equals(action)) {
                 //Dispositivo encontrado
+                Log.d("HEY","Dispositivo encontrado.");
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                 agregarDispositivo(device.getAddress());
             } else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
                 //Búsqueda finalizada
+                Log.d("HEY","Búsqueda terminada.");
                 btnBuscar.setEnabled(true);
                 imagenReloj.clearAnimation();
                 imagenReloj.setVisibility(View.INVISIBLE);

@@ -4,16 +4,21 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothServerSocket;
 import android.bluetooth.BluetoothSocket;
+import android.content.DialogInterface;
 import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.UUID;
 
 import es.iesnervion.albertonavarro.a10_dadoker.Models.Dado;
@@ -34,7 +39,9 @@ public class VsHumanoOnline extends VsHumanoLocal {
     Handler handler;
     private String dadosAdversario;
     private boolean esServidor = true;
-    boolean losDosHanTirado = false;
+    boolean adversarioTirado = false;
+    boolean usuarioTirado = false;
+    String dadosPAraEnviar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,15 +65,21 @@ public class VsHumanoOnline extends VsHumanoLocal {
         txtResIA.setRotation(0);
         //endregion
 
+        adversarioTirado = false;
+        usuarioTirado =  false;
+
 
         //Maneja los mensajes recibidos
         handler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
+                //Toast.makeText(VsHumanoOnline.this, "Ha llegado un mensaje", Toast.LENGTH_SHORT).show();
+                //Log.d("HEYEY","Ha llegado un mensaje");
                 byte[] write = (byte[]) msg.obj;
-                String weapon = new String(write, 0, msg.arg1);
-                dadosAdversario = weapon.trim();
-                losDosHanTirado = true;
+                String res = new String(write, 0, msg.arg1);
+                String mensaje = res.trim();
+                //setStateMessage(dadosAdversario);
+                recibirMensaje(mensaje);
             }
         };
         //endregion
@@ -86,11 +99,42 @@ public class VsHumanoOnline extends VsHumanoLocal {
 
     }
 
+    private void recibirMensaje(String mensaje) {
+        adversarioTirado = true;
+        dadosAdversario = mensaje;
+        tirarDados();
+        if(tirando&&!mensaje.contains("A"))
+            acabarTirada(mensaje);
+    }
+
+    private void acabarTirada(String mensaje) {
+        //Log.d("JEUAJ", mensaje);
+        char[] array = mensaje.toCharArray();
+        for(int i = 0; i<5; i++){
+            dadosIA[i].setValor(Integer.parseInt(""+array[i]));
+        }
+        super.enAnimacionFinal();
+        tirando = false;
+        adversarioTirado = false;
+        usuarioTirado = false;
+        btnRoll.setText("Tirar");
+        //btnRoll.setTextColor(Color.GREEN);
+        btnRoll.setEnabled(true);
+    }
+
+    @Override
+    public void enAnimacionFinal(){
+        connectedThread.write(dadosPAraEnviar.getBytes());
+    }
+
     @Override
     public void onClick(View view) {
         super.onClick(view);
         switch (view.getId()) {
             case R.id.btnRoll:
+                btnRoll.setEnabled(false);
+                usuarioTirado=true;
+                connectedThread.write("A".getBytes());
                 tirarDados();
                 break;
         }
@@ -98,36 +142,22 @@ public class VsHumanoOnline extends VsHumanoLocal {
 
 
     public void tirarDados() {
+        if(usuarioTirado&&adversarioTirado) {
+            usuarioTirado = false;
+            adversarioTirado = false;
+            boolean noMovimientos = true;
+            tirando = true;
+            btnRoll.setText("TIRANDO");
 
-        btnRoll.setEnabled(false);
-        btnRoll.setText("TIRANDO");
+            //btnRoll.setTextColor(Color.GRAY);
 
-        String dadosSeleccionados = obtenerDadosSeleccionados();
-        byte[] send = dadosSeleccionados.getBytes();
-        connectedThread.write(send);
-        btnRoll.setText("Esperando adversario...");
+            if (primeraTirada) {
+                tableroH.setBackgroundColor(Color.LTGRAY);
+                tableroIA.setBackgroundColor(Color.LTGRAY);
+            }
 
-        while (!losDosHanTirado) {
-        }
+            dadosPAraEnviar = "";
 
-        char[] arrayString = dadosAdversario.toCharArray();
-        for (int i=0; i<arrayString.length; i++) {
-            if (arrayString[i] == '1')
-                dados[i].setColorFilter(colorSel, PorterDuff.Mode.MULTIPLY);
-        }
-
-        boolean noMovimientos = true;
-
-        tirando = true;
-
-        btnRoll.setTextColor(Color.GRAY);
-
-        if (primeraTirada) {
-            tableroH.setBackgroundColor(Color.LTGRAY);
-            tableroIA.setBackgroundColor(Color.LTGRAY);
-        }
-
-        if(esServidor) {
             //Usuario
             for (Dado dado : dados) {
                 if (primeraTirada || dado.getColorFilter() != null) {
@@ -136,40 +166,53 @@ public class VsHumanoOnline extends VsHumanoLocal {
                     dado.setValor(ale.nextInt(6) + 2);
                     dado.clearColorFilter();
                 }
+                dadosPAraEnviar += "" + dado.getValor();
             }
 
-            //Adversario
-            for (Dado dado : dadosIA) {
-                if (primeraTirada || dado.getColorFilter() != null) {
-                    noMovimientos = false;
-                    dado.startAnimation(animDado);
-                    dado.setValor(ale.nextInt(6) + 2);
-                    dado.clearColorFilter();
-                }
-            }
-            if (noMovimientos)
+            /*for (Dado dado : dadosIA)
+                dado.startAnimation(animDado);*/
+
+
+
+            if(noMovimientos)
                 enAnimacionFinal();
 
-            String tempDadosUsuario = obtenerDadosSeleccionados();
-            connectedThread.write(tempDadosUsuario.getBytes());
-            String tempDadosAdversario = obtenerDadosSeleccionados();
-            connectedThread.write(tempDadosAdversario.getBytes());
-            losDosHanTirado=false;
+
+        }
+
+    }
+
+    @Override
+    public void finalizarRonda() {
+        if(vidaH==0 || vidaIA==0){
+            mediaPlayer.stop();
+            String titulo = (vidaH==0)?"¡DERROTA!": "¡VICTORIA!";
+            String mensaje = (vidaH==0)?"¡Has perdido!": "¡Has ganado!";
+            if(vidaH==0)
+                soundPool.play(idMusicLose, 1, 1, 1, 0, 1);
+            else
+                soundPool.play(idMusicVictory,0.5f, 0.5f, 1, 0, 1);
+
+
+            new AlertDialog.Builder(this)
+                    .setTitle(titulo)
+                    .setMessage(mensaje)
+                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            finish();
+                        }
+                    })
+                    .setCancelable(false)
+                    .show();
+        }else {
+            btnRoll.setText("TIRAR");
+            //btnRoll.setTextColor(Color.GREEN);
+            btnRoll.setEnabled(true);
+            primeraTirada = !primeraTirada;
+            tirando = false;
         }
     }
 
-    /**0 - No seleccionado
-     * 1 - Seleccionado **/
-    private String obtenerDadosSeleccionados() {
-        String res = "";
-        for (Dado dado : dados) {
-            if (dado.getColorFilter() != null)
-                res+="1";
-            else
-                res+="0";
-        }
-        return  res;
-    }
 
 
     /**Movidas de servidores y tal..**/
@@ -204,9 +247,29 @@ public class VsHumanoOnline extends VsHumanoLocal {
      * @param msg - String; Mensaje que se quiere mostrar
      */
     public void setStateMessage(String msg) {
-        btnRoll.setText(msg);
+        final String tmpMsg = msg;
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                btnRoll.setText(tmpMsg);
+
+            }
+        });
         //Toast.makeText(this, "msg", Toast.LENGTH_SHORT).show();
     }
+
+    public void setEnableButton(boolean bol) {
+        final boolean tmpMsg = bol;
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                btnRoll.setEnabled(tmpMsg);
+
+            }
+        });
+        //Toast.makeText(this, "msg", Toast.LENGTH_SHORT).show();
+    }
+
 
 
     //region Clase_AcceptThread
@@ -343,7 +406,9 @@ public class VsHumanoOnline extends VsHumanoLocal {
         private final OutputStream mmOutStream;
 
         public ConnectedThread(BluetoothSocket socket) {
-            setStateMessage("Conectado");
+            //setStateMessage("Conectado");
+            setStateMessage("Tirar");
+            setEnableButton(true);
             mmSocket = socket;
             InputStream tmpIn = null;
             OutputStream tmpOut = null;
@@ -384,6 +449,8 @@ public class VsHumanoOnline extends VsHumanoLocal {
         /* Call this from the main activity to send data to the remote device */
         public void write(byte[] bytes) {
             try {
+                //Log.d("OIOIOI","Escribiendo el mensaje");
+                //Toast.makeText(VsHumanoOnline.this, "Escribiendo el mensaje", Toast.LENGTH_SHORT).show();
                 mmOutStream.write(bytes);
             } catch (IOException e) {
             }
@@ -397,5 +464,6 @@ public class VsHumanoOnline extends VsHumanoLocal {
             }
         }
     }
+
     //endregion
 }
