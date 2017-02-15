@@ -10,8 +10,8 @@ import android.widget.Button;
 
 public class VsHumanoLocal extends VsIA {
 
-    private Button btnTirarAdversario;
-    private Button btnTirarUsuario;
+    public Button btnTirarAdversario;
+    public Button btnTirarUsuario;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

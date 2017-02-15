@@ -5,6 +5,7 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
 
+import java.util.ArrayList;
 import java.util.Set;
 
 /**
@@ -58,6 +59,21 @@ public class BluetoothManager {
     public Set<BluetoothDevice> getPairedDevices() {
         Set<BluetoothDevice> listPaired = mBluetoothAdapter.getBondedDevices();
         return listPaired;
+    }
+
+    /**
+     * Devuelve una lista con las Mac de los dispositivos emparejados del dispositivo actual.
+     *
+     * @return ArrayList<String> de todas las direcciones de los dispositivos emparejados
+     */
+    public ArrayList<String> obtenerDireccionesDeDispositivosEmparejados() {
+        ArrayList<String> res = new ArrayList<>();
+        if(mBluetoothAdapter!=null) {
+            Set<BluetoothDevice> listPaired = mBluetoothAdapter.getBondedDevices();
+            for (BluetoothDevice bd : listPaired)
+                res.add(bd.getAddress());
+        }
+        return res;
     }
 
 

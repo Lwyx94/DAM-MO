@@ -11,6 +11,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -20,12 +21,12 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
-import es.iesnervion.albertonavarro.a10_dadoker.Tests.ServerActivity;
 import es.iesnervion.albertonavarro.a10_dadoker.Utiles.BluetoothManager;
-import es.iesnervion.albertonavarro.a10_dadoker.Utiles.Recibidor;
+
 
 public class BuscaJugadores extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
     private TextView txtInfo;
@@ -33,7 +34,7 @@ public class BuscaJugadores extends AppCompatActivity implements View.OnClickLis
     private ListView lista;
     private ImageView imagenReloj;
     private ArrayAdapter<String> adapter;
-    private ArrayList<String> dispositivos = new ArrayList<>();
+    private ArrayList<String> dispositivos;
     private Animation animReloj;
     private Button btnBuscar;
 
@@ -50,6 +51,8 @@ public class BuscaJugadores extends AppCompatActivity implements View.OnClickLis
         lista = (ListView) findViewById(R.id.list);
         imagenReloj = (ImageView) findViewById(R.id.imagenReloj);
         btnBuscar.setOnClickListener(this);
+        dispositivos = new ArrayList<>();
+        btManager = new BluetoothManager();
         //endregion
         //region Animación del reloj
         animReloj = AnimationUtils.loadAnimation(this, R.anim.anim_dado);
@@ -60,11 +63,12 @@ public class BuscaJugadores extends AppCompatActivity implements View.OnClickLis
         //endregion
         //region Lista
         lista.setAdapter(adapter);
-        new Intent(this, ServerActivity.class);
+
+        limpiarLista();
         lista.setOnItemClickListener(this);
         //endregion
 
-        btManager = new BluetoothManager();
+
 
         //IntentFilters
         // Register for broadcasts cuando se descubre un nuevo dispositivo
@@ -93,7 +97,7 @@ public class BuscaJugadores extends AppCompatActivity implements View.OnClickLis
                 btManager.searchDevices();
 
                 //region Animación del reloj
-                imagenReloj.setVisibility(View.VISIBLE);
+                /*imagenReloj.setVisibility(View.VISIBLE);
                 imagenReloj.startAnimation(animReloj);
                 Handler handler = new Handler();
                 handler.postDelayed(new Runnable() {
@@ -102,15 +106,19 @@ public class BuscaJugadores extends AppCompatActivity implements View.OnClickLis
                         imagenReloj.clearAnimation();
                         imagenReloj.setVisibility(View.INVISIBLE);
                     }
-                }, 10000);
+                }, 10000);*/
                 //endregion
                 break;
         }
     }
 
-    public void actualizarLista(ArrayList<String> alLista) {
+    public void limpiarLista() {
+        
         dispositivos.clear();
-        dispositivos.addAll(alLista);
+        if(btManager!=null)
+            dispositivos.addAll(btManager.obtenerDireccionesDeDispositivosEmparejados());
+        else
+            Toast.makeText(this, "btManager es null", Toast.LENGTH_SHORT).show();
         //adapter.notifyDataSetChanged();
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, android.R.id.text1, dispositivos);
         lista.setAdapter(adapter);
@@ -126,8 +134,14 @@ public class BuscaJugadores extends AppCompatActivity implements View.OnClickLis
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-        String itemValue = (String) lista.getItemAtPosition(position);
+        btManager.cancelSearchDevices();
+        if(!(lista.getItemAtPosition(position)).equals("")) {
+            // Create the result Intent and include the MAC address
+            Intent intent = new Intent(this, VsHumanoOnline.class);
+            intent.putExtra("bluetooth", (String) lista.getItemAtPosition(position));
+            startActivity(intent);
+        }
+        //String itemValue = (String) lista.getItemAtPosition(position);
         //startActivity(new Intent(this, VsHumano.class));
     }
 
@@ -140,15 +154,19 @@ public class BuscaJugadores extends AppCompatActivity implements View.OnClickLis
 
             if(BluetoothAdapter.ACTION_DISCOVERY_STARTED.equals(action)) {
                 //Buscando dispositivos
-
+                btnBuscar.setEnabled(false);
+                imagenReloj.setVisibility(View.VISIBLE);
+                imagenReloj.startAnimation(animReloj);
             }
             if (BluetoothDevice.ACTION_FOUND.equals(action)) {
                 //Dispositivo encontrado
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-                agregarDispositivo(device.getName());
+                agregarDispositivo(device.getAddress());
             } else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
                 //Búsqueda finalizada
-
+                btnBuscar.setEnabled(true);
+                imagenReloj.clearAnimation();
+                imagenReloj.setVisibility(View.INVISIBLE);
             }
 
         }

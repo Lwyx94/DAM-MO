@@ -51,7 +51,7 @@ public class Recibidor extends BroadcastReceiver {
                         for(WifiP2pDevice device:wifiP2pDeviceList.getDeviceList()){
                             s.add(device.deviceAddress);
                         }
-                        mActivity.actualizarLista(s);
+                        //mActivity.actualizarLista(s);
                     }
                 });
             }

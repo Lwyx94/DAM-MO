@@ -27,7 +27,7 @@
         <activity android:name=".BuscaJugadores" android:screenOrientation="portrait"/>
         <activity android:name=".Tests.ServerActivity" android:screenOrientation="portrait"/>
         <activity android:name=".VsHumanoLocal" android:screenOrientation="portrait"/>
-        <activity android:name=".Tests.ClientActivity" android:screenOrientation="portrait"></activity>
+        <activity android:name=".VsHumanoOnline" android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

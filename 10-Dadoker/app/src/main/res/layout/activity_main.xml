@@ -34,19 +34,19 @@
             android:text="@string/vs_ai"/>
 
         <Button
-            android:id="@+id/btnTestServidor"
+            android:id="@+id/btnBuscarPartida"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:textSize="30sp"
-            android:text="TEST SERVIDOR"/>
+            android:text="BUSCAR PARTIDA"/>
 
         <Button
-            android:id="@+id/btnTestCliente"
+            android:id="@+id/btnCrearPartida"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:textSize="30sp"
-            android:text="TEST CLIENTE"/>
+            android:text="CREAR PARTIDA"/>
     </LinearLayout>
 </RelativeLayout>

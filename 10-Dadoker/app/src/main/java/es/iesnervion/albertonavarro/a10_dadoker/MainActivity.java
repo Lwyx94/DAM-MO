@@ -7,16 +7,13 @@ import android.view.View;
 import android.widget.Button;
 
 import es.iesnervion.albertonavarro.a10_dadoker.Tests.ClientActivity;
-import es.iesnervion.albertonavarro.a10_dadoker.Tests.ServerActivity;
 
-/**http://stackoverflow.com/questions/6931118/for-multiplayer-online-game-how-to-initiate-data-transfer-by-server-and-send-da/ **/
-/**https://thinkandroid.wordpress.com/2010/03/27/incorporating-socket-programming-into-your-applications/ **/
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
     private Button btnIA;
     private Button btnHumano;
-    private Button btnTestServidor;
-    private Button btnTestCliente;
+    private Button btnBuscarPartida;
+    private Button btnCrearPartida;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,10 +24,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btnIA.setOnClickListener(this);
         btnHumano = (Button) findViewById(R.id.btnHumano);
         btnHumano.setOnClickListener(this);
-        btnTestServidor = (Button) findViewById(R.id.btnTestServidor);
-        btnTestServidor.setOnClickListener(this);
-        btnTestCliente = (Button) findViewById(R.id.btnTestCliente);
-        btnTestCliente.setOnClickListener(this);
+        btnBuscarPartida = (Button) findViewById(R.id.btnBuscarPartida);
+        btnBuscarPartida.setOnClickListener(this);
+        btnCrearPartida = (Button) findViewById(R.id.btnCrearPartida);
+        btnCrearPartida.setOnClickListener(this);
     }
 
     @Override
@@ -42,11 +39,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.btnIA:
                 startActivity(new Intent(this, VsIA.class));
                 break;
-            case R.id.btnTestServidor:
+            case R.id.btnBuscarPartida:
                 startActivity(new Intent(this, BuscaJugadores.class));
                 break;
-            case R.id.btnTestCliente:
-                startActivity(new Intent(this, ClientActivity.class));
+            case R.id.btnCrearPartida:
+                startActivity(new Intent(this, VsHumanoOnline.class));
                 break;
         }
     }
