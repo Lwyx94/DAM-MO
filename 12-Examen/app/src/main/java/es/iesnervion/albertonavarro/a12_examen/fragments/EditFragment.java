@@ -46,18 +46,18 @@ public class EditFragment extends Fragment implements View.OnClickListener {
         btnAccept = (Button) view.findViewById(R.id.btnEditAccept);
         btnAccept.setOnClickListener(this);
 
-        if (savedInstanceState != null) {
-            id = savedInstanceState.getInt("id");
+
+            id = getArguments().getInt("id");
             Contact c = ((MainActivity) getActivity()).getContact(id);
             etName.setText(c.getName());
             etAge.setText("" + c.getAge());
             etPhone.setText(c.getPhone());
-            if (c.getGender() == "Male")
+            if (c.getGender().equals("Male"))
                 rbMale.setChecked(true);
             else
                 rbFemale.setChecked(true);
-        } else
-            Toast.makeText(getContext(), "Se ha producido un error", Toast.LENGTH_SHORT).show();
+
+
 
         return view;
     }

@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         //SQLite
-        sqlHelper =  new SQLiteHelper(this, "DBContacts", null, 2);
+        sqlHelper =  new SQLiteHelper(this, "DBContacts", null, 1);
         sqlHandler = new SQLiteHandler(sqlHelper.getWritableDatabase());
 
 
