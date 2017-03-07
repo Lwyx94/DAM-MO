@@ -174,4 +174,28 @@ public class BuscaJugadores extends AppCompatActivity implements View.OnClickLis
         }
     };
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        try {
+            unregisterReceiver(mReceiver);
+        }catch (RuntimeException e){}
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        try {
+            unregisterReceiver(mReceiver);
+        }catch (RuntimeException e){}
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        try {
+            unregisterReceiver(mReceiver);
+        }catch (RuntimeException e){}
+    }
+
 }

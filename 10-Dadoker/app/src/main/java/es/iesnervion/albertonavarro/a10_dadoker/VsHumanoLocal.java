@@ -109,7 +109,7 @@ public class VsHumanoLocal extends VsIA {
             String titulo = "¡SACABÓ!";
             String mensaje = (vidaH == 0) ? "¡Ha ganado el jugador invertido!" : "¡Ha ganado el jugador normal!";
             soundPool.play(idMusicLose, 1, 1, 1, 0, 1);
-            soundPool.play(idMusicVictory, 0.5f, 0.5f, 1, 0, 1);
+            soundPool.play(idMusicVictory, 1, 1, 1, 0, 1);
 
             new AlertDialog.Builder(this)
                     .setTitle(titulo)

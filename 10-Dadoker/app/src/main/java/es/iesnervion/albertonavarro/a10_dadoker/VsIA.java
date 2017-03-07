@@ -168,7 +168,7 @@ public class VsIA extends AppCompatActivity implements View.OnClickListener{
             if(vidaH==0)
                 soundPool.play(idMusicLose, 1, 1, 1, 0, 1);
             else
-                soundPool.play(idMusicVictory,0.5f, 0.5f, 1, 0, 1);
+                soundPool.play(idMusicVictory,1, 1, 1, 0, 1);
 
 
             new AlertDialog.Builder(this)
@@ -384,8 +384,8 @@ public class VsIA extends AppCompatActivity implements View.OnClickListener{
                 break;
             case 3:
                 //res="¡EMPATE! ¡AW YEAH!";
-                Snackbar.make(findViewById(R.id.activity_vs_ia), "¡EMPATE!", Snackbar.LENGTH_LONG).show();
-
+                if(!primeraTirada)
+                    Snackbar.make(findViewById(R.id.activity_vs_ia), "¡EMPATE!", Snackbar.LENGTH_LONG).show();
                 break;
         }
         if(!primeraTirada) {

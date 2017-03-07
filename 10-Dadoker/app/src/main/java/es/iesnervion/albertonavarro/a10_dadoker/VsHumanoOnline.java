@@ -188,7 +188,7 @@ public class VsHumanoOnline extends VsHumanoLocal {
             if(vidaH==0)
                 soundPool.play(idMusicLose, 1, 1, 1, 0, 1);
             else
-                soundPool.play(idMusicVictory,0.5f, 0.5f, 1, 0, 1);
+                soundPool.play(idMusicVictory,1, 1, 1, 0, 1);
 
 
             new AlertDialog.Builder(this)
