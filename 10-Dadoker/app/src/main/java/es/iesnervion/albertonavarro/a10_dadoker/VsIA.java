@@ -7,6 +7,7 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.SoundPool;
 import android.os.Build;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -50,6 +51,7 @@ public class VsIA extends AppCompatActivity implements View.OnClickListener{
     public MediaPlayer mediaPlayer;
     public int idMusicBackground, idSoundRoll, idMusicVictory, idMusicLose;
     public int colorSel = Color.LTGRAY;
+    public int numTutorial = 0;
 
 
     @Override
@@ -194,7 +196,7 @@ public class VsIA extends AppCompatActivity implements View.OnClickListener{
         switch (view.getId()){
             case R.id.btnRoll:
                 //if(!tirando)
-                    tirarDados();
+                tirarDados();
                 break;
             case R.id.dado1:
                 if(!primeraTirada) {
@@ -382,6 +384,8 @@ public class VsIA extends AppCompatActivity implements View.OnClickListener{
                 break;
             case 3:
                 //res="¡EMPATE! ¡AW YEAH!";
+                Snackbar.make(findViewById(R.id.activity_vs_ia), "¡EMPATE!", Snackbar.LENGTH_LONG).show();
+
                 break;
         }
         if(!primeraTirada) {
@@ -670,5 +674,25 @@ public class VsIA extends AppCompatActivity implements View.OnClickListener{
             movimientoIA();
 
         finalizarRonda();
+        mostrarTutorial();
+
+    }
+
+
+    public void mostrarTutorial(){
+        int view = R.id.activity_vs_ia;
+        switch (numTutorial){
+            case 0:
+                if(!primeraTirada) {
+                    Snackbar.make(findViewById(view), "Selecciona los dados que quieras tirar", Snackbar.LENGTH_LONG).show();
+                    numTutorial++;
+                }
+                break;
+            case 1:
+                if(primeraTirada) {
+                    Snackbar.make(findViewById(view), "Cada ronda consta de 2 tiradas", Snackbar.LENGTH_LONG).show();
+                    numTutorial++;
+                }
+        }
     }
 }

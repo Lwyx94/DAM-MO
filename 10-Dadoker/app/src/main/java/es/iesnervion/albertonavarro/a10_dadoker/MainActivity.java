@@ -1,12 +1,12 @@
 package es.iesnervion.albertonavarro.a10_dadoker;
 
+import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-
-import es.iesnervion.albertonavarro.a10_dadoker.Tests.ClientActivity;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -43,7 +43,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(new Intent(this, BuscaJugadores.class));
                 break;
             case R.id.btnCrearPartida:
-                startActivity(new Intent(this, VsHumanoOnline.class));
+                if(!BluetoothAdapter.getDefaultAdapter().isEnabled())
+                    Toast.makeText(this, "Necesitas activar el Bluetooth", Toast.LENGTH_SHORT).show();
+                else
+                    startActivity(new Intent(this, VsHumanoOnline.class));
                 break;
         }
     }

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">10-Dadoker</string>
+    <string name="app_name">Dadoker</string>
     <string name="vs_ai">CONTRA IA</string>
     <string name="vs_human">CONTRA HUMANO</string>
     <string name="roll">TIRAR</string>

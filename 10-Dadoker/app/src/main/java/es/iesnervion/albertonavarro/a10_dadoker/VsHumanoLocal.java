@@ -3,6 +3,7 @@ package es.iesnervion.albertonavarro.a10_dadoker;
 import android.content.DialogInterface;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.Button;
@@ -35,7 +36,6 @@ public class VsHumanoLocal extends VsIA {
         corIA4.setScaleY(-1);
         corIA5.setScaleY(-1);
         txtResIA.setRotation(180);
-
 
     }
 
@@ -137,4 +137,5 @@ public class VsHumanoLocal extends VsIA {
         actualizarVida();
         finalizarRonda();
     }
+
 }

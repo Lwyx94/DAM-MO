@@ -105,18 +105,8 @@ public class BuscaJugadores extends AppCompatActivity implements View.OnClickLis
                         MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION);
                 btManager.searchDevices();
 
-                //region Animación del reloj
-                /*imagenReloj.setVisibility(View.VISIBLE);
-                imagenReloj.startAnimation(animReloj);
-                Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    public void run() {
-                        btnBuscar.setEnabled(true);
-                        imagenReloj.clearAnimation();
-                        imagenReloj.setVisibility(View.INVISIBLE);
-                    }
-                }, 10000);*/
-                //endregion
+                if(!BluetoothAdapter.getDefaultAdapter().isEnabled())
+                    Toast.makeText(this, "Necesitas activar el Bluetooth", Toast.LENGTH_SHORT).show();
                 break;
         }
     }

@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
@@ -37,8 +38,7 @@ public class VsHumanoOnline extends VsHumanoLocal {
 
     ConnectedThread connectedThread;
     Handler handler;
-    private String dadosAdversario;
-    private boolean esServidor = true;
+    private boolean conectado = false;
     boolean adversarioTirado = false;
     boolean usuarioTirado = false;
     String dadosPAraEnviar;
@@ -88,10 +88,8 @@ public class VsHumanoOnline extends VsHumanoLocal {
         Bundle extras = getIntent().getExtras();
 
         if (extras != null) {
-            esServidor = false;
             connectDevice(extras.getString("bluetooth"));
         } else {
-            esServidor = true;
             AcceptThread acceptThread = new AcceptThread();
             acceptThread.start();
         }
@@ -101,7 +99,6 @@ public class VsHumanoOnline extends VsHumanoLocal {
 
     private void recibirMensaje(String mensaje) {
         adversarioTirado = true;
-        dadosAdversario = mensaje;
         tirarDados();
         if(tirando&&!mensaje.contains("A"))
             acabarTirada(mensaje);
@@ -412,7 +409,7 @@ public class VsHumanoOnline extends VsHumanoLocal {
             mmSocket = socket;
             InputStream tmpIn = null;
             OutputStream tmpOut = null;
-
+            conectado = true;
 
             // Get the input and output streams, using temp objects because
             // member streams are final
@@ -466,4 +463,26 @@ public class VsHumanoOnline extends VsHumanoLocal {
     }
 
     //endregion
+
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if(conectado)
+            connectedThread.cancel();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if(conectado)
+            connectedThread.cancel();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if(conectado)
+            connectedThread.cancel();
+    }
 }
