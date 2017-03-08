@@ -8,6 +8,8 @@ import android.content.Intent;
 import java.util.ArrayList;
 import java.util.Set;
 
+import es.iesnervion.albertonavarro.a10_dadoker.Models.DispositivoBluetooth;
+
 /**
  * Created by dgarcia on 17/01/17.
  */
@@ -66,12 +68,15 @@ public class BluetoothManager {
      *
      * @return ArrayList<String> de todas las direcciones de los dispositivos emparejados
      */
-    public ArrayList<String> obtenerDireccionesDeDispositivosEmparejados() {
-        ArrayList<String> res = new ArrayList<>();
+    public ArrayList<DispositivoBluetooth> obtenerDireccionesDeDispositivosEmparejados() {
+        ArrayList<DispositivoBluetooth> res = new ArrayList<>();
         if(mBluetoothAdapter!=null) {
             Set<BluetoothDevice> listPaired = mBluetoothAdapter.getBondedDevices();
-            for (BluetoothDevice bd : listPaired)
-                res.add(bd.getAddress());
+            for (BluetoothDevice bd : listPaired) {
+                DispositivoBluetooth disp = new DispositivoBluetooth();
+                disp.setDispositivo(bd);
+                res.add(disp);
+            }
         }
         return res;
     }

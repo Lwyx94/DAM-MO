@@ -17,13 +17,34 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:layout_marginBottom="40dp">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/dado1"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="DADOKER"
+                android:textSize="47sp"
+                android:textColor="#000000"/>
+        </LinearLayout>
+
         <Button
             android:id="@+id/btnHumano"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="@string/vs_human"
-            android:textSize="30sp"/>
+            android:background="@drawable/botones"
+            android:textSize="30sp"
+            android:padding="10dp"
+            android:layout_margin="5dp"/>
 
         <Button
             android:id="@+id/btnIA"
@@ -31,7 +52,10 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:textSize="30sp"
-            android:text="@string/vs_ai"/>
+            android:text="@string/vs_ai"
+            android:background="@drawable/botones"
+            android:padding="10dp"
+            android:layout_margin="5dp"/>
 
         <Button
             android:id="@+id/btnBuscarPartida"
@@ -39,7 +63,10 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:textSize="30sp"
-            android:text="BUSCAR PARTIDA"/>
+            android:text=" BUSCAR PARTIDA "
+            android:background="@drawable/botones"
+            android:padding="10dp"
+            android:layout_margin="5dp"/>
 
         <Button
             android:id="@+id/btnCrearPartida"
@@ -47,6 +74,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:textSize="30sp"
-            android:text="CREAR PARTIDA"/>
+            android:text="CREAR PARTIDA"
+            android:background="@drawable/botones"
+            android:padding="10dp"
+            android:layout_margin="5dp"/>
     </LinearLayout>
 </RelativeLayout>

@@ -85,7 +85,10 @@
                 android:layout_gravity="center_horizontal"
                 android:text="Tirar"
                 android:rotation="180"
-                android:visibility="gone"/>
+                android:visibility="gone"
+                android:background="@drawable/botones"
+                android:layout_margin="5dp"
+                android:textSize="25sp"/>
 
         </LinearLayout>
 
@@ -154,7 +157,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="@string/roll"
-                android:textSize="30sp" />
+                android:textSize="30sp"
+                android:background="@drawable/botones"
+                android:padding="5dp"/>
 
             <TextView
                 android:id="@+id/txtResHum"
@@ -226,7 +231,10 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:text="Tirar"
-                android:visibility="gone"/>
+                android:visibility="gone"
+                android:background="@drawable/botones"
+                android:textSize="25sp"
+                android:layout_margin="5dp"/>
 
             <LinearLayout
                 android:layout_width="match_parent"

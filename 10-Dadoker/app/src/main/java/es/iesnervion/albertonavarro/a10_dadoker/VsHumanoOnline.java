@@ -43,6 +43,7 @@ public class VsHumanoOnline extends VsHumanoLocal {
     boolean usuarioTirado = false;
     String dadosPAraEnviar;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,7 +94,6 @@ public class VsHumanoOnline extends VsHumanoLocal {
             AcceptThread acceptThread = new AcceptThread();
             acceptThread.start();
         }
-
 
     }
 
@@ -221,7 +221,6 @@ public class VsHumanoOnline extends VsHumanoLocal {
      * @param mac String Dirección MAC del dispositivo remoto
      */
     public void connectDevice(String mac) {
-
         BluetoothDevice deviceRemote = mBluetoothAdapter.getRemoteDevice(mac);
         ConnectThread connectThread = new ConnectThread(deviceRemote);
         connectThread.start();
@@ -231,7 +230,6 @@ public class VsHumanoOnline extends VsHumanoLocal {
      * Realiza la conexión entre los dos dispositivos emparejados
      */
     public synchronized void connected(BluetoothSocket socket, BluetoothDevice device) {
-
         setStateMessage(device.getAddress());
         connectedThread = new ConnectedThread(socket);
         connectedThread.start();
@@ -291,6 +289,7 @@ public class VsHumanoOnline extends VsHumanoLocal {
             } catch (IOException e) {
             }
             mmServerSocket = tmp;
+
         }
 
         public void run() {

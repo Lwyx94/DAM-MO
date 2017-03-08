@@ -7,9 +7,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.net.wifi.p2p.WifiP2pManager;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -27,6 +24,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import es.iesnervion.albertonavarro.a10_dadoker.Models.DispositivoBluetooth;
 import es.iesnervion.albertonavarro.a10_dadoker.Utiles.BluetoothManager;
 
 
@@ -35,8 +33,8 @@ public class BuscaJugadores extends AppCompatActivity implements View.OnClickLis
     private TextView txtLista;
     private ListView lista;
     private ImageView imagenReloj;
-    private ArrayAdapter<String> adapter;
-    private ArrayList<String> dispositivos;
+    private ArrayAdapter<DispositivoBluetooth> adapter;
+    private ArrayList<DispositivoBluetooth> dispositivos;
     private Animation animReloj;
     private Button btnBuscar;
 
@@ -60,7 +58,7 @@ public class BuscaJugadores extends AppCompatActivity implements View.OnClickLis
         animReloj = AnimationUtils.loadAnimation(this, R.anim.anim_dado);
         animReloj.setDuration(9000);
 
-        adapter = new ArrayAdapter<String>(this,
+        adapter = new ArrayAdapter<DispositivoBluetooth>(this,
                 android.R.layout.simple_list_item_1, android.R.id.text1, dispositivos);
         //endregion
         //region Lista
@@ -86,7 +84,7 @@ public class BuscaJugadores extends AppCompatActivity implements View.OnClickLis
         registerReceiver(mReceiver, filter);
 
 
-        setTexto(android.provider.Settings.Secure.getString(getContentResolver(), "bluetooth_address"));
+        setTexto("Tú eres "+android.provider.Settings.Secure.getString(getContentResolver(), "bluetooth_name"));
 
     }
 
@@ -123,7 +121,7 @@ public class BuscaJugadores extends AppCompatActivity implements View.OnClickLis
         lista.setAdapter(adapter);
     }
 
-    public void agregarDispositivo(String s) {
+    public void agregarDispositivo(DispositivoBluetooth s) {
         dispositivos.add(s);
         //adapter.notifyDataSetChanged();
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, android.R.id.text1, dispositivos);
@@ -136,12 +134,11 @@ public class BuscaJugadores extends AppCompatActivity implements View.OnClickLis
         btManager.cancelSearchDevices();
         if(!(lista.getItemAtPosition(position)).equals("")) {
             // Create the result Intent and include the MAC address
+            DispositivoBluetooth dp =(DispositivoBluetooth) lista.getItemAtPosition(position);
             Intent intent = new Intent(this, VsHumanoOnline.class);
-            intent.putExtra("bluetooth", (String) lista.getItemAtPosition(position));
+            intent.putExtra("bluetooth", dp.getDispositivo().getAddress());
             startActivity(intent);
         }
-        //String itemValue = (String) lista.getItemAtPosition(position);
-        //startActivity(new Intent(this, VsHumano.class));
     }
 
     //Recibidor
@@ -161,8 +158,8 @@ public class BuscaJugadores extends AppCompatActivity implements View.OnClickLis
             if (BluetoothDevice.ACTION_FOUND.equals(action)) {
                 //Dispositivo encontrado
                 Log.d("HEY","Dispositivo encontrado.");
-                BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-                agregarDispositivo(device.getAddress());
+                DispositivoBluetooth device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                agregarDispositivo(device);
             } else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
                 //Búsqueda finalizada
                 Log.d("HEY","Búsqueda terminada.");
