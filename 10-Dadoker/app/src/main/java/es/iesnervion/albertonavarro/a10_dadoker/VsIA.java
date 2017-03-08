@@ -183,7 +183,7 @@ public class VsIA extends AppCompatActivity implements View.OnClickListener{
                     .show();
         }else {
             btnRoll.setText("TIRAR");
-            //btnRoll.setTextColor(Color.GREEN);
+            btnRoll.setTextColor(Color.BLACK);
             btnRoll.setEnabled(true);
             primeraTirada = !primeraTirada;
             tirando = false;
